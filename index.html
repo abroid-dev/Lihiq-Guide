@@ -2,392 +2,708 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LihiqHIS System Guide</title>
-<meta name="description" content="What LihiqHIS does desk by desk, how to test it, how it compares with Bahmni, and the next steps.">
+<meta name="description" content="What LihiqHIS does, how to test it, how it compares with Bahmni, and what is being built next.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #0b2a4a; --text: #1f2a37; --muted: #5b6b7c; --line: #dfe6ee;
-    --bg: #f5f7fa; --card: #ffffff; --ok-bg: #e7f5ec; --ok: #1b7a3d;
-    --warn-bg: #fdf3dc; --warn: #8a5a00; --info-bg: #e8f0f8; --nav: #0b2a4a;
+/* Layout: a fixed section rail on the left for wide screens, a scrolling chip bar on phones; one reading column. */
+:root {
+  --bg: #f3f6f7; --surface: #ffffff; --raise: #f8fafb; --ink: #0f2533; --text: #23323d; --muted: #5d6e7a;
+  --line: #dbe3e8; --accent: #0c7a74; --accent-soft: #e2f2f0; --accent-ink: #075b56;
+  --ok: #1d7a43; --ok-soft: #e4f4ea; --warn: #8a5a00; --warn-soft: #fbf0d6; --dev: #1f5fa8; --dev-soft: #e3edf9;
+  --off: #66727c; --off-soft: #eceff2; --bad: #a33a2b; --bad-soft: #fbe7e3;
+  --display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --radius: 14px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1820; --surface: #13222c; --raise: #172934; --ink: #e8f1f4; --text: #cfdbe1; --muted: #93a6b1;
+    --line: #26394a; --accent: #3fb8ad; --accent-soft: #123b39; --accent-ink: #8fe0d7;
+    --ok: #6fd39a; --ok-soft: #133524; --warn: #f0c46a; --warn-soft: #3a2e12; --dev: #8db8f0; --dev-soft: #16293f;
+    --off: #a1adb6; --off-soft: #1f2d37; --bad: #f19a8b; --bad-soft: #3b1d18;
+    color-scheme: dark;
   }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
-  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 "Segoe UI", Inter, Arial, sans-serif; }
-  a { color: var(--ink); }
-  .top { position: sticky; top: 0; z-index: 10; background: var(--nav); color: #fff; }
-  .top-inner { max-width: 1000px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 16px; align-items: center; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-  .top-inner::-webkit-scrollbar { display: none; }
-  .brand { font-weight: 700; margin-right: 8px; }
-  .top a { color: #dbe7f3; text-decoration: none; font-size: 14px; }
-  .top a:hover { color: #fff; }
-  main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 56px; }
-  .hero h1 { color: var(--ink); font-size: 32px; line-height: 1.2; margin: 8px 0; }
-  .kicker { color: var(--muted); font-size: 13px; letter-spacing: .05em; text-transform: uppercase; margin: 0; }
-  .lead { font-size: 18px; margin: 8px 0 0; }
-  .badge { display: inline-block; margin-top: 12px; padding: 6px 12px; border-radius: 999px; background: var(--ok-bg); color: var(--ok); font-weight: 600; font-size: 14px; }
-  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0 8px; }
-  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
-  .kpi b { display: block; color: var(--ink); font-size: 26px; line-height: 1.15; }
-  .kpi span { color: var(--muted); font-size: 14px; }
-  section { margin-top: 32px; }
-  h2 { color: var(--ink); font-size: 24px; margin: 0 0 6px; }
-  .intro { color: var(--muted); margin: 0 0 16px; }
-  h3 { color: var(--ink); font-size: 18px; margin: 0 0 8px; }
-  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
-  .card ul, .card ol { margin: 0; padding-left: 20px; }
-  .card li { margin: 4px 0; }
-  .full { grid-column: 1 / -1; }
-  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .03em; background: #fafbfd; }
-  tr:last-child td { border-bottom: 0; }
-  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; }
-  .done { background: var(--ok-bg); color: var(--ok); }
-  .wait { background: var(--warn-bg); color: var(--warn); }
-  .plan { background: var(--info-bg); color: var(--ink); }
-  details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
-  summary { cursor: pointer; padding: 14px 18px; font-weight: 600; color: var(--ink); list-style: none; display: flex; justify-content: space-between; gap: 12px; }
-  summary::-webkit-details-marker { display: none; }
-  summary::after { content: "+"; color: var(--muted); font-weight: 400; }
-  details[open] summary::after { content: "–"; }
-  .steps { padding: 0 18px 16px; }
-  .steps ol { margin: 0 0 10px; padding-left: 20px; }
-  .expect { background: var(--ok-bg); border-radius: 8px; padding: 10px 12px; margin: 0; }
-  .expect b { color: var(--ok); }
-  .note { background: var(--info-bg); border-radius: 12px; padding: 14px 18px; margin-top: 12px; }
-  .bars { display: grid; gap: 8px; }
-  .bar { display: grid; grid-template-columns: 150px 1fr 48px; align-items: center; gap: 10px; font-size: 15px; }
-  .track { height: 12px; background: #e9eef4; border-radius: 999px; overflow: hidden; }
-  .fill { height: 100%; border-radius: 999px; }
-  .f-have { background: #3a9a5b; } .f-part { background: #d9a420; } .f-miss { background: #a8b4c2; }
-  .timeline { display: grid; gap: 10px; }
-  .step-row { display: grid; grid-template-columns: 34px 1fr; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
-  .num { width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 700; }
-  .step-row p { margin: 4px 0 0; color: var(--muted); }
-  footer { color: var(--muted); font-size: 13px; margin-top: 40px; border-top: 1px solid var(--line); padding-top: 16px; }
-  @media (max-width: 760px) {
-    .kpis { grid-template-columns: repeat(2, 1fr); }
-    .cards { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 26px; }
-    h2 { font-size: 21px; }
-    .bar { grid-template-columns: 110px 1fr 40px; font-size: 14px; }
-    th, td { padding: 8px 10px; font-size: 14px; }
-    .wide-table { overflow-x: auto; }
-    .wide-table table { min-width: 560px; }
-  }
-  @media print {
-    .top { display: none; }
-    details { break-inside: avoid; }
-    details:not([open]) .steps { display: block; }
-  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1820; --surface: #13222c; --raise: #172934; --ink: #e8f1f4; --text: #cfdbe1; --muted: #93a6b1;
+  --line: #26394a; --accent: #3fb8ad; --accent-soft: #123b39; --accent-ink: #8fe0d7;
+  --ok: #6fd39a; --ok-soft: #133524; --warn: #f0c46a; --warn-soft: #3a2e12; --dev: #8db8f0; --dev-soft: #16293f;
+  --off: #a1adb6; --off-soft: #1f2d37; --bad: #f19a8b; --bad-soft: #3b1d18;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent-ink); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); text-wrap: balance; line-height: 1.2; margin: 0; }
+h1 { font-size: clamp(30px, 4.6vw, 46px); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 18px; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font: 600 13px/1 var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); }
+
+/* Shell */
+.shell { display: grid; grid-template-columns: 236px minmax(0, 1fr); min-height: 100vh; }
+.rail { position: sticky; top: 0; height: 100vh; padding: 28px 18px; border-right: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; gap: 22px; }
+.logo { font: 800 20px/1 var(--display); color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.mark { width: 30px; height: 30px; border-radius: 9px; background: var(--accent); color: #fff; display: grid; place-items: center; font: 800 16px/1 var(--display); }
+.rail nav { display: flex; flex-direction: column; gap: 2px; }
+.rail nav a { display: flex; gap: 10px; align-items: center; padding: 9px 12px; border-radius: 10px; color: var(--text); text-decoration: none; font-weight: 500; }
+.rail nav a .n { font: 500 12px/1 var(--mono); color: var(--muted); width: 18px; }
+.rail nav a:hover { background: var(--raise); }
+.rail nav a.on { background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; }
+.rail nav a.on .n { color: var(--accent-ink); }
+.rail-foot { margin-top: auto; font-size: 13px; color: var(--muted); display: grid; gap: 10px; }
+.theme-btn { font: 600 13px/1 var(--body); color: var(--text); background: var(--raise); border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; justify-self: start; }
+.chips { display: none; }
+main { min-width: 0; padding-block: 40px 80px; padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 920px; margin: 0 auto; display: grid; gap: 72px; }
+section { display: grid; gap: 22px; min-width: 0; }
+section > *, .wrap > * { min-width: 0; }
+.sec-head { display: grid; gap: 8px; }
+.sec-head p { color: var(--muted); max-width: 64ch; }
+
+/* Hero */
+.hero { display: grid; gap: 18px; }
+.hero .lead { font-size: 19px; max-width: 62ch; }
+.status-line .pill { white-space: normal; }
+.status-line { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 999px; font: 600 13px/1.4 var(--body); white-space: nowrap; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.p-ok { background: var(--ok-soft); color: var(--ok); }
+.p-warn { background: var(--warn-soft); color: var(--warn); }
+.p-dev { background: var(--dev-soft); color: var(--dev); }
+.p-off { background: var(--off-soft); color: var(--off); }
+.p-bad { background: var(--bad-soft); color: var(--bad); }
+.journey { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.j { padding: 14px 14px 16px; display: grid; gap: 4px; border-right: 1px solid var(--line); position: relative; }
+.j:last-child { border-right: 0; }
+.j b { font: 700 15px/1.3 var(--display); color: var(--ink); }
+.j span { font-size: 14px; color: var(--muted); }
+.j .dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font: 700 12px/1 var(--display); color: var(--muted); background: var(--surface); }
+.j.done .dot { background: var(--ok); border-color: var(--ok); color: #fff; }
+.j.now { background: var(--accent-soft); }
+.j.now .dot { border-color: var(--accent); color: var(--accent-ink); }
+.facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 2px; }
+.fact b { font: 800 28px/1.1 var(--display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.fact span { font-size: 14px; color: var(--muted); }
+
+/* Built table */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: 16px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 12px/1.4 var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--raise); }
+tr:last-child td { border-bottom: 0; }
+
+/* Desk tabs */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tab { font: 600 15px/1 var(--body); padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.desk { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; display: grid; gap: 16px; }
+.desk-cols { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+.desk ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.rules { background: var(--raise); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; }
+.rules h4 { margin: 0; font: 700 13px/1.3 var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+/* Test checklist */
+.progress { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 10px; }
+.progress-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.progress-top b { font: 700 17px/1.2 var(--display); color: var(--ink); }
+.meter { height: 10px; background: var(--off-soft); border-radius: 999px; overflow: hidden; display: flex; }
+.meter i { display: block; height: 100%; transition: width .3s ease; }
+.m-pass { background: var(--ok); } .m-issue { background: var(--bad); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.link-btn { font: 600 14px/1 var(--body); background: none; border: 0; color: var(--accent-ink); cursor: pointer; padding: 6px 0; text-decoration: underline; }
+.scenarios { display: grid; gap: 10px; }
+.sc { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.sc summary { list-style: none; cursor: pointer; padding: 16px 18px; display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 14px; align-items: center; }
+.sc summary::-webkit-details-marker { display: none; }
+.sc .no { width: 32px; height: 32px; border-radius: 10px; background: var(--raise); display: grid; place-items: center; font: 700 14px/1 var(--display); color: var(--muted); }
+.sc[data-state="pass"] .no { background: var(--ok); color: #fff; }
+.sc[data-state="issue"] .no { background: var(--bad); color: #fff; }
+.sc .t { display: grid; gap: 2px; min-width: 0; }
+.sc .t b { font: 700 16px/1.35 var(--display); color: var(--ink); }
+.sc .t span { font-size: 14px; color: var(--muted); }
+.sc .body { padding: 0 18px 18px 64px; display: grid; gap: 14px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.steps label { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; cursor: pointer; }
+.steps input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--accent); }
+.steps input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+.expect { background: var(--ok-soft); border-radius: 12px; padding: 12px 14px; color: var(--text); }
+.expect b { color: var(--ok); }
+.verdict { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.vbtn { font: 600 14px/1 var(--body); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.vbtn.pass[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: #fff; }
+.vbtn.issue[aria-pressed="true"] { background: var(--bad); border-color: var(--bad); color: #fff; }
+.note-in { flex: 1 1 220px; min-width: 0; font: 15px/1.4 var(--body); padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--raise); color: var(--text); }
+
+/* Two-column cards */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; display: grid; gap: 10px; align-content: start; }
+.card ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+
+/* Bahmni */
+.stack { display: flex; height: 16px; border-radius: 999px; overflow: hidden; background: var(--off-soft); }
+.stack i { display: block; height: 100%; }
+.s-have { background: var(--ok); } .s-dev { background: var(--dev); } .s-part { background: #d1a12c; } .s-miss { background: var(--off); opacity: .55; }
+.counts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.count { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.count b { font: 800 24px/1.1 var(--display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.count span { font-size: 14px; color: var(--muted); }
+.count[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.filters { display: flex; gap: 10px; flex-wrap: wrap; }
+.filters input, .filters select { font: 16px/1.3 var(--body); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--text); }
+.filters input { flex: 1 1 240px; min-width: 0; }
+.flist { display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.frow { display: grid; grid-template-columns: 56px minmax(0, 1fr) 150px; gap: 12px; padding: 11px 16px; border-bottom: 1px solid var(--line); align-items: start; }
+.frow:last-child { border-bottom: 0; }
+.frow code { font: 500 13px/1.6 var(--mono); color: var(--muted); }
+.frow .f { display: grid; gap: 2px; min-width: 0; }
+.frow .f small { color: var(--muted); font-size: 14px; }
+.frow .tag { justify-self: start; }
+.empty { padding: 18px 16px; color: var(--muted); }
+.extra { display: inline-block; margin-left: 6px; font: 600 11px/1.6 var(--display); letter-spacing: .05em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent-soft); padding: 0 7px; border-radius: 6px; }
+
+/* Next steps */
+.gaps { display: grid; gap: 10px; }
+.gap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 14px; align-items: start; }
+.gap .k { width: 34px; height: 34px; border-radius: 10px; background: var(--dev-soft); color: var(--dev); display: grid; place-items: center; font: 700 15px/1 var(--display); }
+.gap.later .k { background: var(--off-soft); color: var(--off); }
+.gap .g { display: grid; gap: 2px; min-width: 0; }
+.gap .g b { font: 700 16px/1.35 var(--display); color: var(--ink); }
+.gap .g span { font-size: 15px; color: var(--muted); }
+.road { display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.r { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+.r:last-child { border-bottom: 0; }
+.r .k { width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font: 700 15px/1 var(--display); }
+.r b { font: 700 16px/1.35 var(--display); color: var(--ink); }
+.r p { color: var(--muted); margin-top: 2px; }
+.callout { background: var(--accent-soft); color: var(--text); border-radius: var(--radius); padding: 16px 18px; }
+footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 18px; }
+
+/* Phones and narrow windows */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .rail { display: none; }
+  .chips { display: flex; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; gap: 8px; overflow-x: auto; scrollbar-width: none; background: var(--surface); border-bottom: 1px solid var(--line); padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .chips::-webkit-scrollbar { display: none; }
+  .chips a { flex: 0 0 auto; font: 600 14px/1 var(--body); padding: 9px 13px; border-radius: 999px; background: var(--raise); color: var(--text); text-decoration: none; border: 1px solid var(--line); }
+  .chips a.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .chips .logo-s { font: 800 15px/1 var(--display); color: var(--ink); align-self: center; margin-right: 4px; }
+  main { padding-block: 24px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .wrap { gap: 56px; }
+  .facts, .counts { grid-template-columns: repeat(2, 1fr); }
+  .journey { grid-template-columns: minmax(0, 1fr); }
+  .j { grid-template-columns: 22px minmax(0, 1fr); column-gap: 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .j .dot { grid-row: span 2; }
+  .j:last-child { border-bottom: 0; }
+  .desk-cols, .duo { grid-template-columns: minmax(0, 1fr); }
+  .sc .body { padding: 0 16px 16px 16px; }
+  .frow { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .frow code { display: none; }
+  .gap { grid-template-columns: 34px minmax(0, 1fr); }
+  .gap .pill { grid-column: 2; justify-self: start; }
+  body { font-size: 16px; }
+}
 </style>
 </head>
 <body>
-<nav class="top" aria-label="Sections">
-  <div class="top-inner">
-    <span class="brand">LihiqHIS</span>
+<div class="shell">
+  <aside class="rail" aria-label="Sections">
+    <a class="logo" href="#overview"><span class="mark" aria-hidden="true">L</span>LihiqHIS</a>
+    <nav id="rail-nav">
+      <a href="#overview"><span class="n">01</span>Overview</a>
+      <a href="#desks"><span class="n">02</span>Desk by desk</a>
+      <a href="#test"><span class="n">03</span>Test it yourself</a>
+      <a href="#admin"><span class="n">04</span>Administrator</a>
+      <a href="#safety"><span class="n">05</span>Safety</a>
+      <a href="#bahmni"><span class="n">06</span>Bahmni</a>
+      <a href="#next"><span class="n">07</span>Next steps</a>
+    </nav>
+    <div class="rail-foot">
+      <span>Updated 16 October 2026</span>
+      <button class="theme-btn" id="theme-btn" type="button">Switch to dark</button>
+    </div>
+  </aside>
+
+  <nav class="chips" id="chip-nav" aria-label="Sections">
+    <span class="logo-s">LihiqHIS</span>
     <a href="#overview">Overview</a>
-    <a href="#desks">Desk by desk</a>
-    <a href="#test">Test it yourself</a>
-    <a href="#admin">Administrator</a>
+    <a href="#desks">Desks</a>
+    <a href="#test">Test</a>
+    <a href="#admin">Admin</a>
     <a href="#safety">Safety</a>
-    <a href="#bahmni">Bahmni comparison</a>
+    <a href="#bahmni">Bahmni</a>
     <a href="#next">Next steps</a>
-  </div>
-</nav>
+  </nav>
 
-<main>
-  <header class="hero" id="overview">
-    <p class="kicker">LihiqHIS · System guide · Updated 16 October 2026</p>
-    <h1>One hospital system, ready for a pilot on your server</h1>
-    <p class="lead">Reception, triage, doctor, laboratory, imaging, pharmacy, cashier, wards, emergency, theatre, store, insurance, finance, HR, reports and a patient app, on one database and on your own hospital server.</p>
-    <span class="badge">Ready for pilot installation</span>
-    <div class="kpis">
-      <div class="kpi"><b>525</b><span>automated checks passing</span></div>
-      <div class="kpi"><b>49</b><span>end-to-end test scripts</span></div>
-      <div class="kpi"><b>83</b><span>unit tests passing</span></div>
-      <div class="kpi"><b>94 of 164</b><span>Bahmni features matched</span></div>
+  <main>
+    <div class="wrap">
+
+      <section id="overview" class="hero" data-sec>
+        <p class="eyebrow">Hospital operating system for Ethiopia</p>
+        <h1>LihiqHIS is built, tested and ready for a pilot on your server</h1>
+        <p class="lead">Reception, triage, doctor, laboratory, imaging, pharmacy, cashier, wards, emergency, theatre, store, insurance, finance, HR, reports and a patient app. Everything is on one database, on the hospital's own server, and staff use it in a browser on computers, tablets and phones.</p>
+        <div class="status-line">
+          <span class="pill p-ok">Ready for pilot installation</span>
+          <span class="pill p-dev">8 improvements in development, due 17 October 2026</span>
+        </div>
+
+        <div class="journey" aria-label="Where the project is">
+          <div class="j done"><span class="dot">✓</span><b>Build</b><span>Outpatient, inpatient, enterprise, patient</span></div>
+          <div class="j done"><span class="dot">✓</span><b>Test</b><span>525 automated checks pass</span></div>
+          <div class="j now"><span class="dot">3</span><b>Pilot install</b><span>Waiting for the hospital server</span></div>
+          <div class="j"><span class="dot">4</span><b>Train and accept</b><span>Your staff test it</span></div>
+          <div class="j"><span class="dot">5</span><b>Go live</b><span>Outpatient and one ward first</span></div>
+        </div>
+
+        <div class="facts">
+          <div class="fact"><b>525</b><span>automated checks, all passing</span></div>
+          <div class="fact"><b>49</b><span>end-to-end test scripts across every desk</span></div>
+          <div class="fact"><b>83</b><span>unit tests, all passing</span></div>
+          <div class="fact"><b id="fact-bahmni">95 of 164</b><span>Bahmni features matched</span></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Area</th><th>What it covers</th><th>State</th></tr></thead>
+            <tbody>
+              <tr><td>Outpatient</td><td>Reception, triage, doctor, laboratory, imaging, pharmacy, cashier</td><td><span class="pill p-ok">Built and tested</span></td></tr>
+              <tr><td>Inpatient</td><td>Wards and beds, nursing, medication chart, emergency, theatre, stay billing</td><td><span class="pill p-ok">Built and tested</span></td></tr>
+              <tr><td>Enterprise</td><td>Store and stock, procurement, insurance, finance, HR, payroll, reports, record corrections</td><td><span class="pill p-ok">Built and tested</span></td></tr>
+              <tr><td>Patient</td><td>Patient web portal, and a patient mobile app with Amharic</td><td><span class="pill p-ok">Built and tested</span></td></tr>
+              <tr><td>Server package</td><td>Installation, encrypted nightly backup, tested restore, health check</td><td><span class="pill p-ok">Rehearsed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="desks" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">02 · Desk by desk</p>
+          <h2>What each desk does</h2>
+          <p>Pick a desk to see what its staff can do and the rules the system enforces there.</p>
+        </div>
+        <div class="tabs" role="tablist" id="desk-tabs"></div>
+        <div id="desk-panel" class="desk" role="tabpanel" aria-live="polite"></div>
+      </section>
+
+      <section id="test" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">03 · Test it yourself</p>
+          <h2>Twelve scenarios for your staff</h2>
+          <p>Run these on the pilot system. Tick each step as you go, then mark the scenario Passed or Issue and add a note. Your ticks and notes stay in this browser only. Every scenario also has an automated version that passed on 16 October 2026.</p>
+        </div>
+        <div class="progress">
+          <div class="progress-top">
+            <b id="prog-text">0 of 12 scenarios tested</b>
+            <button class="link-btn" type="button" id="reset-btn">Clear my ticks and notes</button>
+          </div>
+          <div class="meter" aria-hidden="true"><i class="m-pass" id="m-pass" style="width:0%"></i><i class="m-issue" id="m-issue" style="width:0%"></i></div>
+          <div class="legend"><span id="lg-pass">0 passed</span><span id="lg-issue">0 with an issue</span><span id="lg-left">12 to go</span></div>
+          <div id="reset-confirm" class="verdict" hidden>
+            <span>Clear every tick and note on this page?</span>
+            <button class="vbtn issue" aria-pressed="true" type="button" id="reset-yes">Clear</button>
+            <button class="vbtn" type="button" id="reset-no">Keep them</button>
+          </div>
+        </div>
+        <div class="scenarios" id="scenarios"></div>
+      </section>
+
+      <section id="admin" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">04 · Administrator</p>
+          <h2>What your administrator controls</h2>
+          <p>These change how the hospital works, without a programmer. Each change is recorded in the audit trail.</p>
+        </div>
+        <div class="duo">
+          <div class="card"><h3>Workflow switches</h3><ul>
+            <li>Card fee on or off, and whether it is charged before or after triage.</li>
+            <li>Triage required or skipped; queue order (Red first, by category, or by arrival).</li>
+            <li>Pay before a service, or bill later.</li>
+            <li>What CBHI, fee-waiver and exempt patients are spared: the card fee only, or all services.</li>
+            <li>Which registration fields are required; the Pediatrics age limit.</li>
+            <li>Admission by a doctor's decision first, or directly at the ward desk.</li>
+            <li>Settle the bill before discharge; cashier shifts required; the cashier's discount limit.</li>
+            <li>Second-person validation of lab results; theatre safety checklist required.</li>
+            <li>SMS appointment reminders, and how many hours ahead.</li>
+          </ul></div>
+          <div class="card"><h3>Accounts and catalogs</h3><ul>
+            <li>Roles and permissions per desk, and one named account per person.</li>
+            <li>An account locks after 5 wrong passwords; the administrator can unlock it.</li>
+            <li>When the administrator sets a password, the person must choose their own at the next sign-in.</li>
+            <li>Passwords need 10 or more characters with letters and a number.</li>
+            <li>Prices and services, lab tests and their normal ranges, drugs, rooms, wards and stores.</li>
+            <li>Catalogs can be imported in bulk from a file.</li>
+          </ul></div>
+        </div>
+      </section>
+
+      <section id="safety" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">05 · Safety and records</p>
+          <h2>How records and data are protected</h2>
+        </div>
+        <div class="duo">
+          <div class="card"><h3>Records</h3><ul>
+            <li>Every change is in the audit trail, with who did it and when.</li>
+            <li>Signed records are never overwritten. A correction is added beside the original, with the reason.</li>
+            <li>A closed case can get an addendum, or be reopened by a doctor with a reason.</li>
+            <li>A critical lab result is texted to the ordering doctor once an SMS provider is set up.</li>
+            <li>Patients see only their own record; patient accounts can never open staff screens.</li>
+          </ul></div>
+          <div class="card"><h3>Server and backup</h3><ul>
+            <li>Runs on your own server and network. Daily work needs no internet.</li>
+            <li>An encrypted backup every night, opened straight away to prove it can be read, kept for 30 days.</li>
+            <li>A monthly restore check compares the backup with the live system.</li>
+            <li>A health check reports when the system stops answering, the disk is 85% full, or no backup was made in 26 hours.</li>
+            <li>Demo accounts are switched off at installation, and the system refuses to start with a weak secret key.</li>
+          </ul></div>
+        </div>
+      </section>
+
+      <section id="bahmni" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">06 · Bahmni comparison</p>
+          <h2>164 Bahmni features, checked one by one</h2>
+          <p>Bahmni is the open-source hospital system many Ethiopian hospitals know. This is every feature on its list, with where LihiqHIS stands today. Features marked <span class="extra">Lihiq only</span> are things Bahmni does not offer.</p>
+        </div>
+        <div class="stack" id="stack" aria-hidden="true"></div>
+        <div class="counts" id="counts"></div>
+        <div class="filters">
+          <label for="f-q" class="sr" hidden>Search features</label>
+          <input id="f-q" type="search" placeholder="Search a feature, for example discharge or panel" aria-label="Search features">
+          <select id="f-m" aria-label="Area"></select>
+        </div>
+        <div class="flist" id="flist"></div>
+        <button type="button" class="vbtn" id="f-more" hidden>Show all</button>
+        <p style="color:var(--muted);font-size:15px">"Partly" means the feature exists with a stated limit. Two Bahmni features do not apply to a hospital-server install and are not counted as gaps.</p>
+      </section>
+
+      <section id="next" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">07 · Next steps</p>
+          <h2>What we are building now, and the road to go-live</h2>
+          <p>The first eight items are in development and due on 17 October 2026. Each one is built with its own automated tests, and this page is updated when it is done.</p>
+        </div>
+        <div class="gaps" id="gaps"></div>
+        <h3 style="margin-top:8px">Road to go-live</h3>
+        <div class="road">
+          <div class="r"><span class="k">1</span><div><b>Hospital server in place</b><p>About 8 cores, 32 GB memory, two mirrored SSDs of at least 500 GB, a UPS and a backup disk. A starting point, not a quotation.</p></div></div>
+          <div class="r"><span class="k">2</span><div><b>Installation and your data</b><p>We install the system and import your price list, test and drug catalogs and staff list. You name an administrator, and every staff member gets their own account.</p></div></div>
+          <div class="r"><span class="k">3</span><div><b>Training</b><p>Desk leads are trained desk by desk, with short desk guides.</p></div></div>
+          <div class="r"><span class="k">4</span><div><b>Acceptance test</b><p>Your staff run the twelve scenarios on this page. We run a load test and a security review on your server.</p></div></div>
+          <div class="r"><span class="k">5</span><div><b>Pilot go-live</b><p>Outpatient plus one ward first, then the rest of the hospital.</p></div></div>
+        </div>
+        <div class="callout"><b>Optional:</b> an SMS provider account turns on appointment reminders and critical-result texts.</div>
+      </section>
+
+      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 16 October 2026.</footer>
     </div>
-  </header>
+  </main>
+</div>
 
-  <section>
-    <h2>What is built</h2>
-    <div class="wide-table">
-      <table>
-        <tr><th>Area</th><th>Covers</th><th>State</th></tr>
-        <tr><td>Outpatient</td><td>Reception, triage, doctor, laboratory, imaging, pharmacy, cashier</td><td><span class="pill done">Built and tested</span></td></tr>
-        <tr><td>Inpatient</td><td>Wards and beds, nursing, medication chart, emergency, theatre, stay billing</td><td><span class="pill done">Built and tested</span></td></tr>
-        <tr><td>Enterprise</td><td>Store and stock, procurement, insurance, finance, HR, payroll, reports, record amendments</td><td><span class="pill done">Built and tested</span></td></tr>
-        <tr><td>Patient</td><td>Patient web portal and patient mobile app (with Amharic)</td><td><span class="pill done">Built and tested</span></td></tr>
-        <tr><td>Server package</td><td>Installation, encrypted nightly backup, tested restore, health check</td><td><span class="pill done">Rehearsed</span></td></tr>
-      </table>
-    </div>
-  </section>
+<script>
+const FEATURES = [{"id": "R1", "m": "Registration", "f": "Create patient (name, sex, DOB, phone, email)", "s": "HAVE", "x": false, "n": ""}, {"id": "R2", "m": "Registration", "f": "Generated patient ID plus extra identifier types", "s": "HAVE", "x": false, "n": ""}, {"id": "R3", "m": "Registration", "f": "Estimated age when DOB unknown", "s": "HAVE", "x": false, "n": ""}, {"id": "R4", "m": "Registration", "f": "Address hierarchy", "s": "PARTIAL", "x": false, "n": ""}, {"id": "R5", "m": "Registration", "f": "Patient search (name, ID, phone)", "s": "HAVE", "x": false, "n": ""}, {"id": "R6", "m": "Registration", "f": "Duplicate check at registration", "s": "HAVE", "x": false, "n": ""}, {"id": "R7", "m": "Registration", "f": "Merge duplicate records", "s": "HAVE", "x": false, "n": ""}, {"id": "R8", "m": "Registration", "f": "Patient photo", "s": "HAVE", "x": false, "n": ""}, {"id": "R9", "m": "Registration", "f": "Patient ID card print with barcode", "s": "PARTIAL", "x": false, "n": ""}, {"id": "R10", "m": "Registration", "f": "Relationships between patients", "s": "PARTIAL", "x": false, "n": ""}, {"id": "R11", "m": "Registration", "f": "Configurable patient attributes (occupation, education, etc.)", "s": "MISSING", "x": false, "n": ""}, {"id": "R12", "m": "Registration", "f": "Start visit by type (OPD, emergency, IPD)", "s": "HAVE", "x": false, "n": ""}, {"id": "R13", "m": "Registration", "f": "Registration (card) fee at registration", "s": "HAVE", "x": false, "n": ""}, {"id": "R14", "m": "Registration", "f": "Archive / void patient", "s": "HAVE", "x": false, "n": ""}, {"id": "R15", "m": "Registration", "f": "Back-dated (retrospective) visit entry", "s": "MISSING", "x": false, "n": ""}, {"id": "R16", "m": "Registration", "f": "Fingerprint / biometric ID", "s": "MISSING", "x": false, "n": ""}, {"id": "R17", "m": "Registration", "f": "Bulk patient import", "s": "HAVE", "x": true, "n": ""}, {"id": "R18", "m": "Registration", "f": "Offline registration (Bahmni Connect)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "R19", "m": "Registration", "f": "FHIR R4 patient exchange", "s": "PARTIAL", "x": false, "n": ""}, {"id": "C1", "m": "Clinical", "f": "Consultation: complaint, history, ROS, exam, assessment and plan", "s": "HAVE", "x": false, "n": ""}, {"id": "C2", "m": "Clinical", "f": "Coded diagnosis (ICD-10) with certainty and primary", "s": "HAVE", "x": false, "n": ""}, {"id": "C3", "m": "Clinical", "f": "Non-coded (free-text) diagnosis", "s": "HAVE", "x": false, "n": ""}, {"id": "C4", "m": "Clinical", "f": "Drug orders (dose, frequency, duration)", "s": "HAVE", "x": false, "n": ""}, {"id": "C5", "m": "Clinical", "f": "Drug allergy check at prescribing", "s": "HAVE", "x": false, "n": ""}, {"id": "C6", "m": "Clinical", "f": "Drug-drug interaction check", "s": "DEV", "x": false, "n": ""}, {"id": "C7", "m": "Clinical", "f": "Order sets / prescription templates", "s": "HAVE", "x": false, "n": ""}, {"id": "C8", "m": "Clinical", "f": "Lab and radiology orders from consultation", "s": "HAVE", "x": false, "n": ""}, {"id": "C9", "m": "Clinical", "f": "Procedure orders (minor procedures, dressing, etc.)", "s": "MISSING", "x": false, "n": ""}, {"id": "C10", "m": "Clinical", "f": "Visit/patient dashboard (diagnoses, drugs, labs, visits, IPD summary)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "C11", "m": "Clinical", "f": "Trends across visits (lab and vitals charts)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "C12", "m": "Clinical", "f": "Standing history / problem list / conditions", "s": "PARTIAL", "x": false, "n": ""}, {"id": "C13", "m": "Clinical", "f": "Disposition: admit, follow-up, refer, close", "s": "HAVE", "x": false, "n": ""}, {"id": "C14", "m": "Clinical", "f": "Printable documents (prescription, sick note, referral, discharge)", "s": "DEV", "x": true, "n": ""}, {"id": "C15", "m": "Clinical", "f": "Amend a signed record with an audit trail", "s": "HAVE", "x": true, "n": ""}, {"id": "C16", "m": "Clinical", "f": "Triage vitals with range reminders", "s": "HAVE", "x": false, "n": ""}, {"id": "C17", "m": "Clinical", "f": "Teleconsultation (video link)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "C18", "m": "Clinical", "f": "Immunization, growth chart", "s": "MISSING", "x": false, "n": ""}, {"id": "C19", "m": "Clinical", "f": "SNOMED / LOINC / CIEL terminology", "s": "MISSING", "x": false, "n": ""}, {"id": "C20", "m": "Clinical", "f": "Staff UI in more than one language", "s": "MISSING", "x": false, "n": "Patient app has Amharic; staff screens planned"}, {"id": "F1", "m": "Forms", "f": "Form builder (admin designs forms)", "s": "MISSING", "x": false, "n": ""}, {"id": "F2", "m": "Forms", "f": "Structured observations with coded answers and units", "s": "MISSING", "x": false, "n": ""}, {"id": "F3", "m": "Forms", "f": "Conditional and calculated fields (BMI, gestational age)", "s": "MISSING", "x": false, "n": ""}, {"id": "F4", "m": "Forms", "f": "Concept dictionary admin", "s": "MISSING", "x": false, "n": ""}, {"id": "F5", "m": "Forms", "f": "Free-text clinical notes", "s": "HAVE", "x": false, "n": ""}, {"id": "I1", "m": "Inpatient", "f": "To-admit queue", "s": "HAVE", "x": false, "n": ""}, {"id": "I2", "m": "Inpatient", "f": "Bed assignment and ward/bed setup", "s": "HAVE", "x": false, "n": ""}, {"id": "I3", "m": "Inpatient", "f": "Visual ward layout", "s": "PARTIAL", "x": false, "n": ""}, {"id": "I4", "m": "Inpatient", "f": "Bed tags (isolation, oxygen, etc.)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "I5", "m": "Inpatient", "f": "Transfer between beds/wards with history", "s": "HAVE", "x": false, "n": ""}, {"id": "I6", "m": "Inpatient", "f": "Discharge with disposition and summary", "s": "HAVE", "x": false, "n": ""}, {"id": "I7", "m": "Inpatient", "f": "Expected discharge date", "s": "DEV", "x": false, "n": ""}, {"id": "I8", "m": "Inpatient", "f": "Undo discharge", "s": "DEV", "x": false, "n": ""}, {"id": "I9", "m": "Inpatient", "f": "Nursing notes", "s": "HAVE", "x": false, "n": ""}, {"id": "I10", "m": "Inpatient", "f": "Medication administration record", "s": "HAVE", "x": false, "n": ""}, {"id": "I11", "m": "Inpatient", "f": "Ward vitals with chart", "s": "HAVE", "x": false, "n": ""}, {"id": "I12", "m": "Inpatient", "f": "Intake/output, fluid balance, care plan", "s": "DEV", "x": false, "n": ""}, {"id": "I13", "m": "Inpatient", "f": "Doctor ward round / progress note", "s": "PARTIAL", "x": false, "n": ""}, {"id": "I14", "m": "Inpatient", "f": "Bed-day and stay charges to the bill", "s": "HAVE", "x": true, "n": ""}, {"id": "I15", "m": "Inpatient", "f": "Emergency board and bays", "s": "HAVE", "x": true, "n": ""}, {"id": "I16", "m": "Inpatient", "f": "Multiple patients per bed (Bahmni default 3)", "s": "NA", "x": false, "n": ""}, {"id": "L1", "m": "Laboratory", "f": "Lab order from clinic, test catalog with prices", "s": "HAVE", "x": false, "n": ""}, {"id": "L2", "m": "Laboratory", "f": "Pay-before-test rule", "s": "HAVE", "x": true, "n": ""}, {"id": "L3", "m": "Laboratory", "f": "Sample collection", "s": "PARTIAL", "x": false, "n": ""}, {"id": "L4", "m": "Laboratory", "f": "Result entry numeric/text with units and reference", "s": "HAVE", "x": false, "n": ""}, {"id": "L5", "m": "Laboratory", "f": "Abnormal and critical highlighting", "s": "HAVE", "x": false, "n": ""}, {"id": "L6", "m": "Laboratory", "f": "Critical-value alert to clinician", "s": "HAVE", "x": false, "n": "Text needs an SMS provider account"}, {"id": "L7", "m": "Laboratory", "f": "Result validation by a second person", "s": "HAVE", "x": false, "n": ""}, {"id": "L8", "m": "Laboratory", "f": "Correct a posted result with reason", "s": "HAVE", "x": false, "n": ""}, {"id": "L9", "m": "Laboratory", "f": "Reject a specimen / re-collect", "s": "HAVE", "x": false, "n": ""}, {"id": "L10", "m": "Laboratory", "f": "Test panels with sub-analytes (CBC, LFT)", "s": "HAVE", "x": false, "n": ""}, {"id": "L11", "m": "Laboratory", "f": "Refer / send-out to outside lab", "s": "HAVE", "x": false, "n": ""}, {"id": "L12", "m": "Laboratory", "f": "Lab dashboard and workload", "s": "PARTIAL", "x": false, "n": ""}, {"id": "L13", "m": "Laboratory", "f": "Turnaround report", "s": "HAVE", "x": false, "n": ""}, {"id": "L14", "m": "Laboratory", "f": "Result printout for the patient", "s": "PARTIAL", "x": false, "n": ""}, {"id": "L15", "m": "Laboratory", "f": "Lab report file upload (Bahmni Lite)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "L16", "m": "Laboratory", "f": "Analyzer interface (HL7/ASTM)", "s": "MISSING", "x": false, "n": ""}, {"id": "L17", "m": "Laboratory", "f": "Microbiology, culture and sensitivity", "s": "MISSING", "x": false, "n": ""}, {"id": "L18", "m": "Laboratory", "f": "QC, reagent stock, equipment log", "s": "MISSING", "x": false, "n": ""}, {"id": "L19", "m": "Laboratory", "f": "Result notice to the patient", "s": "HAVE", "x": true, "n": ""}, {"id": "X1", "m": "Radiology", "f": "Radiology order from consultation", "s": "HAVE", "x": false, "n": ""}, {"id": "X2", "m": "Radiology", "f": "Report: findings and impression, complete order", "s": "HAVE", "x": false, "n": ""}, {"id": "X3", "m": "Radiology", "f": "Attach image or PDF to order (manual mode)", "s": "HAVE", "x": false, "n": ""}, {"id": "X4", "m": "Radiology", "f": "PACS server link and DICOM viewer", "s": "MISSING", "x": false, "n": ""}, {"id": "X5", "m": "Radiology", "f": "Order to modality worklist (DICOM MWL)", "s": "MISSING", "x": false, "n": ""}, {"id": "X6", "m": "Radiology", "f": "Report templates, radiologist sign-off", "s": "MISSING", "x": false, "n": ""}, {"id": "X7", "m": "Radiology", "f": "Imaging study catalog with modality and price", "s": "HAVE", "x": false, "n": ""}, {"id": "P1", "m": "Pharmacy and stock", "f": "Prescription queue for pharmacist", "s": "HAVE", "x": false, "n": ""}, {"id": "P2", "m": "Pharmacy and stock", "f": "Dispense lowers stock", "s": "HAVE", "x": false, "n": ""}, {"id": "P3", "m": "Pharmacy and stock", "f": "Batch and expiry, first-expiring lot first, never expired", "s": "HAVE", "x": false, "n": ""}, {"id": "P4", "m": "Pharmacy and stock", "f": "Partial dispense", "s": "PARTIAL", "x": false, "n": ""}, {"id": "P5", "m": "Pharmacy and stock", "f": "Payment before dispense", "s": "HAVE", "x": true, "n": ""}, {"id": "P6", "m": "Pharmacy and stock", "f": "Receive stock, issue, write-off", "s": "HAVE", "x": false, "n": ""}, {"id": "P7", "m": "Pharmacy and stock", "f": "Transfer between stores", "s": "HAVE", "x": false, "n": ""}, {"id": "P8", "m": "Pharmacy and stock", "f": "Stock count", "s": "HAVE", "x": false, "n": ""}, {"id": "P9", "m": "Pharmacy and stock", "f": "Reorder level and expiry alerts", "s": "HAVE", "x": false, "n": ""}, {"id": "P10", "m": "Pharmacy and stock", "f": "Suppliers and purchase orders with receiving", "s": "HAVE", "x": false, "n": ""}, {"id": "P11", "m": "Pharmacy and stock", "f": "Drug master (form, strength, EML mapping)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "P12", "m": "Pharmacy and stock", "f": "Dispensing label with directions", "s": "PARTIAL", "x": false, "n": ""}, {"id": "P13", "m": "Pharmacy and stock", "f": "Return to stock / patient return", "s": "DEV", "x": false, "n": ""}, {"id": "P14", "m": "Pharmacy and stock", "f": "Controlled drugs register", "s": "DEV", "x": false, "n": ""}, {"id": "P15", "m": "Pharmacy and stock", "f": "Pharmacy stock separate from main store", "s": "HAVE", "x": false, "n": ""}, {"id": "B1", "m": "Billing", "f": "Charges from orders; waiting-to-pay list", "s": "HAVE", "x": false, "n": ""}, {"id": "B2", "m": "Billing", "f": "Collect payment (cash, mobile money, bank, insurance)", "s": "HAVE", "x": false, "n": ""}, {"id": "B3", "m": "Billing", "f": "Discounts", "s": "HAVE", "x": false, "n": ""}, {"id": "B4", "m": "Billing", "f": "Refunds with approval", "s": "HAVE", "x": false, "n": ""}, {"id": "B5", "m": "Billing", "f": "Cashier shift open/close, collections report", "s": "HAVE", "x": false, "n": ""}, {"id": "B6", "m": "Billing", "f": "Insurance and CBHI claims", "s": "HAVE", "x": false, "n": ""}, {"id": "B7", "m": "Billing", "f": "Fee waiver and exempt categories", "s": "HAVE", "x": false, "n": ""}, {"id": "B8", "m": "Billing", "f": "Price list / service catalog", "s": "HAVE", "x": false, "n": ""}, {"id": "B9", "m": "Billing", "f": "Patient balance / outstanding", "s": "PARTIAL", "x": false, "n": ""}, {"id": "B10", "m": "Billing", "f": "Receipts for a company with TIN", "s": "PARTIAL", "x": false, "n": ""}, {"id": "B11", "m": "Billing", "f": "VAT / tax lines", "s": "MISSING", "x": false, "n": ""}, {"id": "B12", "m": "Billing", "f": "General ledger, journals, trial balance", "s": "HAVE", "x": false, "n": ""}, {"id": "B13", "m": "Billing", "f": "Payroll and HR", "s": "HAVE", "x": true, "n": ""}, {"id": "B14", "m": "Billing", "f": "Supplier bills / accounts payable, AR ageing", "s": "MISSING", "x": false, "n": ""}, {"id": "B15", "m": "Billing", "f": "Insurance remittance reconciliation", "s": "PARTIAL", "x": false, "n": ""}, {"id": "A1", "m": "Appointments", "f": "Book appointment", "s": "HAVE", "x": false, "n": ""}, {"id": "A2", "m": "Appointments", "f": "Clinic sessions / open slots", "s": "HAVE", "x": false, "n": ""}, {"id": "A3", "m": "Appointments", "f": "Provider hours and leave", "s": "HAVE", "x": false, "n": ""}, {"id": "A4", "m": "Appointments", "f": "Reschedule / cancel", "s": "PARTIAL", "x": false, "n": ""}, {"id": "A5", "m": "Appointments", "f": "Request then accept (approval)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "A6", "m": "Appointments", "f": "Recurring appointments", "s": "DEV", "x": false, "n": ""}, {"id": "A7", "m": "Appointments", "f": "Teleconsultation link", "s": "MISSING", "x": false, "n": ""}, {"id": "A8", "m": "Appointments", "f": "SMS / email reminders", "s": "HAVE", "x": false, "n": "Needs an SMS provider account"}, {"id": "A9", "m": "Appointments", "f": "Patient self-booking", "s": "HAVE", "x": true, "n": ""}, {"id": "A10", "m": "Appointments", "f": "Walk-in queue tickets", "s": "HAVE", "x": true, "n": ""}, {"id": "A11", "m": "Appointments", "f": "Follow-up list", "s": "HAVE", "x": false, "n": ""}, {"id": "O1", "m": "Theatre", "f": "Schedule a case in a room, no overlap", "s": "HAVE", "x": false, "n": ""}, {"id": "O2", "m": "Theatre", "f": "Start, complete with outcome, cancel with reason", "s": "HAVE", "x": false, "n": ""}, {"id": "O3", "m": "Theatre", "f": "Surgical blocks per surgeon", "s": "MISSING", "x": false, "n": ""}, {"id": "O4", "m": "Theatre", "f": "Calendar / timeline view", "s": "MISSING", "x": false, "n": ""}, {"id": "O5", "m": "Theatre", "f": "Surgeon as a user and team (anaesthetist, scrub nurse)", "s": "HAVE", "x": false, "n": ""}, {"id": "O6", "m": "Theatre", "f": "Postpone / reschedule a case", "s": "PARTIAL", "x": false, "n": ""}, {"id": "O7", "m": "Theatre", "f": "Link to ward stay and bed-day cost", "s": "HAVE", "x": true, "n": ""}, {"id": "O8", "m": "Theatre", "f": "Theatre fee and consumables from theatre store", "s": "HAVE", "x": true, "n": ""}, {"id": "O9", "m": "Theatre", "f": "Surgical safety checklist, anaesthesia record, operative note template", "s": "HAVE", "x": false, "n": ""}, {"id": "PG1", "m": "Programs", "f": "Enrol in a program, state changes, outcome", "s": "MISSING", "x": false, "n": ""}, {"id": "PG2", "m": "Programs", "f": "Program forms and dashboards", "s": "MISSING", "x": false, "n": ""}, {"id": "PG3", "m": "Programs", "f": "Defaulter tracing, scheduled follow-ups", "s": "PARTIAL", "x": false, "n": ""}, {"id": "PG4", "m": "Programs", "f": "Immunization schedule", "s": "MISSING", "x": false, "n": ""}, {"id": "PG5", "m": "Programs", "f": "Disease reporting (eHMIS)", "s": "PARTIAL", "x": false, "n": ""}, {"id": "DOC1", "m": "Documents", "f": "Upload scans and files to a patient (Bahmni side unverified)", "s": "HAVE", "x": false, "n": ""}, {"id": "DOC2", "m": "Documents", "f": "File per visit and per document type with thumbnail gallery", "s": "PARTIAL", "x": false, "n": ""}, {"id": "RP1", "m": "Reports", "f": "Canned operational reports by date range", "s": "HAVE", "x": false, "n": ""}, {"id": "RP2", "m": "Reports", "f": "Export Excel and PDF", "s": "HAVE", "x": false, "n": ""}, {"id": "RP3", "m": "Reports", "f": "Export CSV", "s": "HAVE", "x": false, "n": "Excel and PDF download"}, {"id": "RP4", "m": "Reports", "f": "Admin-defined custom reports (SQL or builder)", "s": "HAVE", "x": false, "n": ""}, {"id": "RP5", "m": "Reports", "f": "Public-health aggregate (HMIS/DHIS2)", "s": "PARTIAL", "x": false, "n": "HMIS-style counts; official DHIS2 codes not built in"}, {"id": "RP6", "m": "Reports", "f": "Cashier and collections reports", "s": "HAVE", "x": false, "n": ""}, {"id": "RP7", "m": "Reports", "f": "Management analytics snapshot", "s": "HAVE", "x": false, "n": ""}, {"id": "RP8", "m": "Reports", "f": "Scheduled or e-mailed reports", "s": "MISSING", "x": false, "n": ""}, {"id": "D1", "m": "Admin and platform", "f": "Users, roles, privileges", "s": "HAVE", "x": false, "n": ""}, {"id": "D2", "m": "Admin and platform", "f": "Audit log", "s": "HAVE", "x": false, "n": ""}, {"id": "D3", "m": "Admin and platform", "f": "Master data (tests, drugs, services) maintenance and bulk upload", "s": "PARTIAL", "x": false, "n": ""}, {"id": "D4", "m": "Admin and platform", "f": "Two-factor authentication", "s": "PARTIAL", "x": false, "n": ""}, {"id": "D5", "m": "Admin and platform", "f": "Multi-branch / multi-facility", "s": "HAVE", "x": false, "n": ""}, {"id": "D6", "m": "Admin and platform", "f": "Facility workflow switches (admin-configurable)", "s": "HAVE", "x": true, "n": ""}, {"id": "D7", "m": "Admin and platform", "f": "Atomfeed/OpenMRS REST integration", "s": "NA", "x": false, "n": ""}, {"id": "D8", "m": "Admin and platform", "f": "Mobile client", "s": "PARTIAL", "x": false, "n": ""}, {"id": "DB1", "m": "Dashboards", "f": "Configurable patient dashboard widgets", "s": "PARTIAL", "x": false, "n": ""}, {"id": "DB2", "m": "Dashboards", "f": "Doctor case pipeline (checked in, awaiting results, results returned)", "s": "HAVE", "x": true, "n": ""}, {"id": "DB3", "m": "Dashboards", "f": "Triage and desk queues", "s": "HAVE", "x": false, "n": ""}, {"id": "DB4", "m": "Dashboards", "f": "Emergency board", "s": "HAVE", "x": true, "n": ""}, {"id": "DB5", "m": "Dashboards", "f": "Management dashboard", "s": "HAVE", "x": false, "n": ""}];
 
-  <section id="desks">
-    <h2>Desk by desk</h2>
-    <p class="intro">What each desk does, and the rules the system enforces there.</p>
-    <div class="cards">
-      <div class="card"><h3>Reception</h3><ul>
-        <li>Register with a generated MRN: name, sex, date of birth or estimated age, phone, address, national ID, next of kin and photo.</li>
-        <li>Duplicate check, and merge of two records of the same person.</li>
-        <li>Card fee and card validity; choice of room and doctor on duty.</li>
-        <li>Pediatrics refuses patients at or over the age limit (default 18).</li>
-        <li>Patient ID card with barcode; documents on the record (referrals, ID scans, outside reports).</li>
-      </ul></div>
-      <div class="card"><h3>Triage</h3><ul>
-        <li>Vitals with graded alerts: mild, moderate, critical.</li>
-        <li>Triage category and chief complaint.</li>
-        <li>Queue order: Red first, by category, or by arrival.</li>
-        <li>Triage can be switched off for facilities that do not use it.</li>
-      </ul></div>
-      <div class="card"><h3>Doctor</h3><ul>
-        <li>Dashboard of cases: checked in, waiting for results, results back.</li>
-        <li>Complaints, history, physical examination (Normal or Abnormal per body system), and diagnosis with ICD code and Confirmed or Presumed.</li>
-        <li>Lab and imaging orders, order sets, and prescriptions with an allergy check.</li>
-        <li>Results with flags and the panel table; acknowledge, then close the case.</li>
-        <li>Admission decision, printed prescription and discharge summary.</li>
-        <li>After closing, an addendum or reopening with a reason. The original is always kept.</li>
-      </ul></div>
-      <div class="card"><h3>Laboratory</h3><ul>
-        <li>Work list, workload board, specimen collection with label print. The specimen is taken only after payment.</li>
-        <li>Normal ranges by sex and age, and an automatic flag: Low, High, Critical or Abnormal.</li>
-        <li>Panels with one value per measurement: CBC, liver, kidney, urinalysis.</li>
-        <li>Reject a specimen with a reason; the doctor sees why.</li>
-        <li>Optional second-person validation, or send a result back. Referral laboratory send-out.</li>
-        <li>Correct a posted result: the old value stays visible.</li>
-      </ul></div>
-      <div class="card"><h3>Imaging</h3><ul>
-        <li>Orders, start of study, report.</li>
-        <li>Attach images, PDF or DICOM files up to 10 MB.</li>
-      </ul></div>
-      <div class="card"><h3>Pharmacy and store</h3><ul>
-        <li>Dispense from the prescription, by batch and expiry, after payment.</li>
-        <li>Stores, receipts, transfers between stores, stock count.</li>
-        <li>Reorder and expiry alerts; purchase orders.</li>
-      </ul></div>
-      <div class="card"><h3>Cashier</h3><ul>
-        <li>Payments, receipts, and a collections report with search.</li>
-        <li>Shifts: opening float, counted drawer, a reason for any difference.</li>
-        <li>Refunds with approval, discounts within a limit, owed balances.</li>
-        <li>CBHI, fee-waiver and exempt schemes.</li>
-      </ul></div>
-      <div class="card"><h3>Wards and emergency</h3><ul>
-        <li>Wards, rooms and beds; admit, transfer, discharge with summary.</li>
-        <li>Nursing notes, vitals chart, medication administration record.</li>
-        <li>Bed-day and theatre charges go to the bill.</li>
-        <li>Emergency quick registration, emergency board with bays, admission from the ER.</li>
-      </ul></div>
-      <div class="card"><h3>Theatre</h3><ul>
-        <li>Booking with a room-clash check; start, complete and theatre fee.</li>
-        <li>WHO safety checklist: sign in, time out, sign out.</li>
-        <li>Team, anaesthesia type and ASA class.</li>
-        <li>An operative note the surgeon signs. A signed note is locked.</li>
-      </ul></div>
-      <div class="card"><h3>Reports</h3><ul>
-        <li>Everyday reports: visits, ward census, money, lab turnaround, stock, top diagnoses.</li>
-        <li>HMIS monthly summary by age band and sex.</li>
-        <li>Report builder: count one thing grouped by up to two; reports can be saved by name.</li>
-        <li>Download as Excel or PDF.</li>
-      </ul></div>
-      <div class="card"><h3>Appointments</h3><ul>
-        <li>Clinic sessions with slots; doctor hours and approved leave respected.</li>
-        <li>Double booking is refused.</li>
-        <li>SMS reminders a set number of hours before. They need an SMS provider account.</li>
-      </ul></div>
-      <div class="card"><h3>Enterprise and patient</h3><ul>
-        <li>Insurance coverage and claims; finance journals; HR and payroll.</li>
-        <li>Patient portal and app: their own record, results and bookings; Amharic in the app.</li>
-      </ul></div>
-    </div>
-  </section>
+const DESKS = [
+  { id: 'reception', name: 'Reception', does: [
+    'Register a patient with a generated MRN: name, sex, date of birth or estimated age, phone, address, national ID, next of kin and photo.',
+    'Check for duplicates before creating a record, and merge two records of the same person.',
+    'Take the card fee, choose the room and, if allowed, the doctor on duty.',
+    'Print the patient ID card with a barcode.',
+    'Attach documents to the record: referral letters, ID scans, outside reports.'],
+    rules: ['Pediatrics refuses patients at or over the age limit (18 unless the administrator changes it).', 'Required fields are those the administrator sets.', 'A merge is refused while the duplicate is queued, mid-visit or admitted.'] },
+  { id: 'triage', name: 'Triage', does: [
+    'Record vitals; each reading is graded mild, moderate or critical.',
+    'Set the triage category and chief complaint.',
+    'See the queue in the order the hospital chose.'],
+    rules: ['Queue order: Red first, by category, or by arrival.', 'Triage can be switched off for facilities that do not use it.'] },
+  { id: 'doctor', name: 'Doctor', does: [
+    'Work from a dashboard: checked in, waiting for results, results back.',
+    'Write complaints with duration, history, and the examination as Normal or Abnormal for each body system.',
+    'Add diagnoses with ICD codes, each marked Confirmed or Presumed.',
+    'Order lab tests and imaging, alone or as order sets; prescribe with an allergy check.',
+    'Read results with their flags, acknowledge them, and close the case.',
+    'Decide on admission; print the prescription and discharge summary.'],
+    rules: ['Nothing in the examination is pre-filled.', 'After closing, changes are an addendum or a reopening, each with a reason. The original stays.'] },
+  { id: 'lab', name: 'Laboratory', does: [
+    'Work from a work list and a workload board; collect the specimen and print the label.',
+    'Enter results. Normal ranges follow the patient\'s sex and age, and the flag (Low, High, Critical, Abnormal) is worked out automatically.',
+    'Panels such as CBC (11 measurements), liver, kidney and urinalysis keep one value per measurement.',
+    'Reject a specimen with a reason; send a test to a referral laboratory.',
+    'Correct a posted result; the old value stays visible.',
+    'Keep the lab\'s own test catalog and normal ranges.'],
+    rules: ['The specimen is taken only after payment, unless the hospital bills later.', 'With second-person validation on, the person who entered a result cannot confirm it.', 'A result with a posted value cannot have its specimen rejected.'] },
+  { id: 'imaging', name: 'Imaging', does: ['Receive orders, start the study and write the report.', 'Attach images, PDF or DICOM files up to 10 MB.'],
+    rules: ['Only JPG, PNG, WebP, PDF and DICOM files are accepted.', 'Only staff with imaging rights can attach files.'] },
+  { id: 'pharmacy', name: 'Pharmacy and store', does: [
+    'Dispense from the doctor\'s prescription, by batch and expiry.',
+    'Run several stores: receipts, transfers between stores, stock counts.',
+    'See reorder and expiry alerts; raise purchase orders and receive them.'],
+    rules: ['Medicine is dispensed only after payment, unless the hospital bills later.', 'Stock can never go below zero.'] },
+  { id: 'cashier', name: 'Cashier', does: [
+    'Take payments and print receipts; search the collections report by method.',
+    'Open a shift with a float and close it by counting the drawer.',
+    'Request refunds, give discounts and record owed balances.',
+    'Apply CBHI, fee-waiver and exempt schemes.'],
+    rules: ['A difference at shift close needs a reason.', 'A refund needs approval by finance or the administrator.', 'A discount above the cashier\'s limit is refused.'] },
+  { id: 'wards', name: 'Wards and emergency', does: [
+    'Manage wards, rooms and beds; admit, transfer and discharge with a summary.',
+    'Chart nursing notes, ward vitals and the medication administration record.',
+    'Register an emergency patient with few details and complete them later; use the emergency board with bays.'],
+    rules: ['Bed days and theatre charges go to the bill automatically.', 'If the administrator chooses, the bill is settled before discharge.'] },
+  { id: 'theatre', name: 'Theatre', does: [
+    'Book operations with a room-clash check; start, complete and charge the theatre fee.',
+    'Fill the WHO safety checklist: sign in, time out, sign out.',
+    'Record the team (surgeon, assistant, anaesthetist, nurses), anaesthesia type and ASA class.',
+    'Write the operative note; the surgeon signs it.'],
+    rules: ['With the checklist required, an operation cannot start before Sign in and Time out, or end before Sign out and a signed note.', 'A signed operative note cannot be changed.'] },
+  { id: 'reports', name: 'Reports', does: [
+    'Everyday reports: visits, ward census, money received, lab turnaround, stock alerts, top diagnoses.',
+    'HMIS monthly summary: visits, diagnoses, admissions and discharges by age band and sex, lab tests and operations.',
+    'Report builder: count one thing grouped by up to two; the administrator saves reports for others.',
+    'Download as Excel or PDF.'],
+    rules: ['A report covers at most one year.', 'Official DHIS2 form codes are not built in; the figures are ready to enter.'] },
+  { id: 'appointments', name: 'Appointments', does: [
+    'Open clinic sessions with slots and book patients into them.',
+    'Respect each doctor\'s working hours and approved leave.',
+    'Send SMS reminders a set number of hours before.'],
+    rules: ['Double booking is refused.', 'A booking outside the doctor\'s hours or on approved leave is refused.', 'Reminders need an SMS provider account.'] },
+  { id: 'enterprise', name: 'Enterprise and patient', does: [
+    'Insurance coverage and claims; finance journals; HR staff and departments; payroll runs.',
+    'Patient portal and app: the patient\'s own record, results and bookings, with Amharic in the app.'],
+    rules: ['Finance journals must balance: debits equal credits.', 'A patient account sees only that patient\'s own record.'] },
+];
 
-  <section id="test">
-    <h2>Test it yourself</h2>
-    <p class="intro">Short scenarios to run on the pilot system with your staff. Open each one for the steps and what you should see. Every scenario has an automated version that passed on 16 October 2026.</p>
+const SCENARIOS = [
+  { t: 'A new outpatient visit, reception to pharmacy', who: 'Reception, triage, doctor, cashier, lab, pharmacy · about 15 minutes', steps: [
+    'Reception: register a new patient and take the card fee.', 'Triage: enter vitals and a category.', 'Doctor: write the complaint and examination, add a diagnosis, order a lab test.',
+    'Cashier: take the lab fee. Laboratory: collect the specimen and post the result.', 'Doctor: read the result, prescribe and close the case. Pharmacy: dispense.'],
+    expect: 'Each desk sees the patient only when it is their turn, the lab cannot collect before payment, and the stock of the dispensed medicine goes down.' },
+  { t: 'Lab flags from normal ranges', who: 'Doctor, cashier, laboratory · about 5 minutes', steps: [
+    'Order a CBC for a female patient, pay, and collect the specimen.', 'Enter hemoglobin 9, white cells 40 and platelets 200.', 'Post the panel.'],
+    expect: 'While you type, hemoglobin shows Low, white cells Critical and platelets Normal. The panel is flagged Critical. A hemoglobin of 13 shows Low for a man and Normal for a woman.' },
+  { t: 'Reject a specimen', who: 'Laboratory, doctor · about 3 minutes', steps: [
+    'Collect a specimen, choose Reject specimen and the reason Haemolysed.', 'Open the same case as the doctor.', 'Collect the specimen again.'],
+    expect: 'The order goes back to waiting for a specimen and the doctor sees "Specimen rejected: Haemolysed". Collecting again does not charge the patient twice.' },
+  { t: 'Second-person validation of lab results', who: 'Administrator, two lab staff, doctor · about 5 minutes', steps: [
+    'Administrator: in Facility workflow, choose that a second person validates each result.', 'Lab staff A posts a result; the doctor opens the case.', 'Lab staff A tries to validate it; lab staff B validates it.'],
+    expect: 'The doctor sees "waiting" until it is validated. A cannot validate their own result. After B validates, the doctor sees the value and who validated it.' },
+  { t: 'Correct a signed record', who: 'Laboratory, doctor, nurse · about 5 minutes', steps: [
+    'The lab corrects a posted result and gives a reason.', 'The doctor adds an addendum to a closed case.', 'The doctor reopens a case closed by mistake. A nurse tries to add an addendum.'],
+    expect: 'The old value stays visible beside the new one, with who, when and why. The nurse is refused.' },
+  { t: 'Admission, ward care and discharge', who: 'Doctor, ward staff, nurse · about 10 minutes', steps: [
+    'The doctor decides to admit; the ward assigns a bed.', 'The nurse charts vitals and gives a medicine on the medication chart.', 'Transfer to another bed, then discharge with a summary.'],
+    expect: 'The bed shows as occupied, bed days are charged, the discharge summary prints, and the bed is free again afterwards.' },
+  { t: 'Theatre with the WHO safety checklist', who: 'Administrator, theatre staff, surgeon · about 10 minutes', steps: [
+    'Administrator: make the theatre checklist required.', 'Book a case and try to start it. Tick Sign in and Time out, then start.', 'Record the team, anaesthesia and the operative note. Tick Sign out, sign the note, then complete.'],
+    expect: 'The case cannot start before Sign in and Time out, and cannot end before Sign out and a signed note. After signing, the note cannot be edited.' },
+  { t: 'Cashier shift, refund and discount', who: 'Cashier, finance or administrator · about 10 minutes', steps: [
+    'Open a shift with a float and take some payments.', 'Request a refund and have finance or the administrator approve it.', 'Try a discount above the limit, then close the shift and count the drawer.'],
+    expect: 'The discount above the limit is refused. The shift report shows expected against counted cash, and any difference needs a reason.' },
+  { t: 'Appointments and SMS reminders', who: 'Reception, administrator · about 10 minutes', steps: [
+    'Open a clinic session with 30-minute slots. Book a slot, then try to book it again.', 'Try to book a doctor outside their hours, or on approved leave.', 'Administrator: turn on reminders 24 hours ahead and press "Send due reminders now".'],
+    expect: 'The double booking, the out-of-hours booking and the booking on leave are all refused. With an SMS provider set up, each patient with a phone gets one reminder.' },
+  { t: 'HMIS monthly summary and the report builder', who: 'Administrator or data officer · about 5 minutes', steps: [
+    'Open Reports, then "HMIS monthly summary and custom reports". Pick a month and press Show.', 'Download it as Excel and as PDF.', 'Build a report of visits by sex and age band, and save it by name.'],
+    expect: 'The age and sex tables add up to the totals, the visit total matches the everyday report, and both files open.' },
+  { t: 'Accounts and sign-in security', who: 'Administrator, one staff member · about 5 minutes', steps: [
+    'Administrator: open an account with a weak password, then with a good one.', 'Sign in as that person, then enter a wrong password five times.', 'Administrator: unlock the account, then set a new password for it.'],
+    expect: 'The weak password is refused, the person must choose their own password at first sign-in, the account locks after five wrong tries, and unlock works.' },
+  { t: 'Backup and restore', who: 'IT staff · about 10 minutes', steps: [
+    'Run the nightly backup by hand.', 'Run the monthly restore check.'],
+    expect: 'An encrypted backup file is written and opened straight away to prove it can be read. The restore check reports OK, with the same row counts as the live system.' },
+];
 
-    <details><summary>1. A new outpatient visit, reception to pharmacy</summary><div class="steps"><ol>
-      <li>Reception: register a new patient and take the card fee.</li>
-      <li>Triage: enter vitals and a category.</li>
-      <li>Doctor: open the case, write the complaint and examination, add a diagnosis and order a lab test.</li>
-      <li>Cashier: take the lab fee. Laboratory: collect the specimen and post the result.</li>
-      <li>Doctor: read the result, prescribe and close the case. Pharmacy: dispense.</li>
-    </ol><p class="expect"><b>Expected:</b> each desk sees the patient only when it is their turn, the lab cannot collect before payment, and the stock of the dispensed drug goes down.</p></div></details>
+const GAPS = [
+  { t: 'Drug interaction check when prescribing', w: 'Warns the doctor before two medicines that should not be combined are prescribed together.', s: 'dev' },
+  { t: 'Sick note and referral letter printing', w: 'Everyday documents the patient takes away, printed from the case.', s: 'dev' },
+  { t: 'Fluid balance on the ward', w: 'Intake and output charted by the nurse, with the daily balance.', s: 'dev' },
+  { t: 'Expected discharge date', w: 'Helps the ward plan beds.', s: 'dev' },
+  { t: 'Undo a discharge made by mistake', w: 'With a reason, recorded in the audit trail, like reopening a case.', s: 'dev' },
+  { t: 'Return medicine to stock', w: 'Unused or returned medicine goes back into the store with a record.', s: 'dev' },
+  { t: 'Controlled-drug register', w: 'Every movement of controlled medicines in its own register.', s: 'dev' },
+  { t: 'Recurring appointments', w: 'Chronic-care follow-ups booked as a series.', s: 'dev' },
+  { t: 'Amharic staff screens', w: 'Staff working in their own language. The patient app already has Amharic.', s: 'plan' },
+  { t: 'TB, HIV and ANC programs, and a form builder', w: 'Disease programs and custom forms, if the pilot runs these clinics.', s: 'plan' },
+  { t: 'Lab analyser interface, microbiology and PACS', w: 'Machine integration, if the hospital has the equipment.', s: 'later' },
+];
 
-    <details><summary>2. Lab flags from normal ranges</summary><div class="steps"><ol>
-      <li>Order a CBC for a woman, pay, and collect the specimen.</li>
-      <li>Enter hemoglobin 9, white cells 40 and platelets 200.</li>
-      <li>Post the panel.</li>
-    </ol><p class="expect"><b>Expected:</b> while you type, hemoglobin shows Low, white cells Critical and platelets Normal. The panel is flagged Critical. The same hemoglobin of 13 shows Low for a man and Normal for a woman.</p></div></details>
+const STATUS = {
+  HAVE: { label: 'Have', cls: 'p-ok', bar: 's-have' },
+  DEV: { label: 'In development', cls: 'p-dev', bar: 's-dev' },
+  PARTIAL: { label: 'Partly', cls: 'p-warn', bar: 's-part' },
+  MISSING: { label: 'Not yet', cls: 'p-off', bar: 's-miss' },
+  NA: { label: 'Does not apply', cls: 'p-off', bar: '' },
+};
 
-    <details><summary>3. Reject a specimen</summary><div class="steps"><ol>
-      <li>Collect a specimen, then choose Reject specimen and the reason Haemolysed.</li>
-      <li>Open the same case as the doctor.</li>
-    </ol><p class="expect"><b>Expected:</b> the order goes back to waiting for a specimen. The doctor sees "Specimen rejected: Haemolysed". Collecting again does not charge the patient twice.</p></div></details>
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage unavailable */ } },
+};
 
-    <details><summary>4. Second-person validation of lab results</summary><div class="steps"><ol>
-      <li>Administrator: in Facility workflow, choose "A second person validates each result".</li>
-      <li>Lab technician A posts a result. The doctor opens the case.</li>
-      <li>Technician A tries to validate it, then technician B validates it.</li>
-    </ol><p class="expect"><b>Expected:</b> the doctor sees "waiting" until it is validated. A cannot validate their own result. After B validates, the doctor sees the value and who validated it.</p></div></details>
+/* Theme */
+const themeBtn = document.getElementById('theme-btn');
+function currentDark() {
+  const t = document.documentElement.getAttribute('data-theme');
+  return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function paintThemeBtn() { themeBtn.textContent = currentDark() ? 'Switch to light' : 'Switch to dark'; }
+const savedTheme = store.get('lihiq-theme', null);
+if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+paintThemeBtn();
+themeBtn.addEventListener('click', () => {
+  const next = currentDark() ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  store.set('lihiq-theme', next);
+  paintThemeBtn();
+});
 
-    <details><summary>5. Correct a signed record</summary><div class="steps"><ol>
-      <li>The lab corrects a posted result and gives a reason.</li>
-      <li>The doctor adds an addendum to a closed case, then reopens a case closed by mistake.</li>
-    </ol><p class="expect"><b>Expected:</b> the old value stays visible next to the new one, with who, when and why. A nurse cannot add an addendum.</p></div></details>
+/* Desks */
+const tabs = document.getElementById('desk-tabs');
+const panel = document.getElementById('desk-panel');
+function showDesk(id) {
+  const d = DESKS.find((x) => x.id === id) || DESKS[0];
+  tabs.querySelectorAll('.tab').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.id === d.id)));
+  panel.innerHTML = `<h3>${esc(d.name)}</h3><div class="desk-cols"><ul>${d.does.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+    <div class="rules"><h4>Rules it enforces</h4><ul>${d.rules.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></div>`;
+  store.set('lihiq-desk', d.id);
+}
+tabs.innerHTML = DESKS.map((d) => `<button class="tab" role="tab" type="button" id="tab-${d.id}" data-id="${d.id}">${esc(d.name)}</button>`).join('');
+tabs.addEventListener('click', (e) => { const b = e.target.closest('.tab'); if (b) showDesk(b.dataset.id); });
+showDesk(store.get('lihiq-desk', 'reception'));
 
-    <details><summary>6. Admission, ward care and discharge</summary><div class="steps"><ol>
-      <li>The doctor decides to admit. The ward assigns a bed.</li>
-      <li>The nurse charts vitals and gives a medicine on the medication chart.</li>
-      <li>Transfer to another bed, then discharge with a summary.</li>
-    </ol><p class="expect"><b>Expected:</b> the bed shows occupied, bed days are charged, the discharge summary prints, and the bed is free again.</p></div></details>
-
-    <details><summary>7. Theatre with the WHO safety checklist</summary><div class="steps"><ol>
-      <li>Administrator: make the theatre checklist required.</li>
-      <li>Book a case and try to start it. Tick Sign in and Time out, then start.</li>
-      <li>Record the team, anaesthesia and the operative note. Tick Sign out, sign the note, then complete.</li>
-    </ol><p class="expect"><b>Expected:</b> the case cannot start before Sign in and Time out, and cannot be completed before Sign out and a signed note. After signing, the note cannot be edited.</p></div></details>
-
-    <details><summary>8. Cashier shift and refund</summary><div class="steps"><ol>
-      <li>Open a shift with a float and take some payments.</li>
-      <li>Request a refund; approve it as finance or the administrator.</li>
-      <li>Close the shift and count the drawer.</li>
-    </ol><p class="expect"><b>Expected:</b> the shift report shows expected against counted cash, and a difference needs a reason. A discount over the cashier's limit is refused.</p></div></details>
-
-    <details><summary>9. Appointments and SMS reminders</summary><div class="steps"><ol>
-      <li>Open a clinic session with 30-minute slots. Book a slot, then try to book the same slot again.</li>
-      <li>Try to book the doctor outside their hours, or on approved leave.</li>
-      <li>Administrator: turn on SMS reminders 24 hours ahead and press "Send due reminders now".</li>
-    </ol><p class="expect"><b>Expected:</b> the double booking, out-of-hours and leave bookings are refused. With an SMS provider set up, patients with a phone receive one reminder each.</p></div></details>
-
-    <details><summary>10. HMIS monthly summary and the report builder</summary><div class="steps"><ol>
-      <li>Reports, then "HMIS monthly summary and custom reports". Pick a month and press Show.</li>
-      <li>Download it as Excel and as PDF.</li>
-      <li>Build a report: count visits by sex and age band. Save it by name.</li>
-    </ol><p class="expect"><b>Expected:</b> the age and sex tables add up to the totals, the visit total matches the everyday report, and both files open.</p></div></details>
-
-    <details><summary>11. Accounts and sign-in security</summary><div class="steps"><ol>
-      <li>Administrator: open an account with a weak password, then a good one.</li>
-      <li>Sign in as that person. Then enter a wrong password 5 times.</li>
-      <li>Administrator: unlock the account, then set a new password for it.</li>
-    </ol><p class="expect"><b>Expected:</b> the weak password is refused, the person must choose their own password at first sign-in, the account locks after 5 wrong tries, and unlock works.</p></div></details>
-
-    <details><summary>12. Backup and restore (IT staff)</summary><div class="steps"><ol>
-      <li>Run the nightly backup by hand.</li>
-      <li>Run the monthly restore check.</li>
-    </ol><p class="expect"><b>Expected:</b> an encrypted backup file is written and opened straight away to prove it can be read. The restore check reports OK, with the same row counts as the live system.</p></div></details>
-  </section>
-
-  <section id="admin">
-    <h2>What your administrator controls</h2>
-    <p class="intro">These change how the hospital works without a programmer.</p>
-    <div class="cards">
-      <div class="card"><h3>Workflow switches</h3><ul>
-        <li>Card fee on or off, and when it is charged.</li>
-        <li>Triage required or skipped; queue order.</li>
-        <li>Pay before service, or bill later.</li>
-        <li>What CBHI, fee-waiver and exempt patients are spared.</li>
-        <li>Required registration fields; Pediatrics age limit.</li>
-        <li>Admission by doctor decision first, or direct.</li>
-        <li>Settle the bill before discharge; cashier shifts required; discount limit.</li>
-        <li>Lab second-person validation; theatre checklist required.</li>
-        <li>SMS reminders and how many hours ahead.</li>
-      </ul></div>
-      <div class="card"><h3>Access and catalogs</h3><ul>
-        <li>Roles and permissions per desk; one named account per person.</li>
-        <li>Lockout after 5 wrong passwords; unlock; set a password that must be changed.</li>
-        <li>Prices and services, lab tests and their normal ranges, drugs, rooms, wards and stores.</li>
-        <li>Bulk import of catalogs.</li>
-      </ul></div>
-    </div>
-  </section>
-
-  <section id="safety">
-    <h2>Safety, records and operations</h2>
-    <div class="cards">
-      <div class="card"><h3>Records</h3><ul>
-        <li>Every change is in the audit trail, with who and when.</li>
-        <li>Signed records are never overwritten. Corrections are added beside the original.</li>
-        <li>A critical lab result is texted to the ordering doctor once an SMS provider is set up.</li>
-      </ul></div>
-      <div class="card"><h3>Server</h3><ul>
-        <li>Runs on your own server and network; no internet needed for daily work.</li>
-        <li>Encrypted nightly backup, kept 30 days; monthly restore check.</li>
-        <li>Health check for "not answering", a disk 85% full, and a missing backup.</li>
-        <li>Demo accounts are switched off at installation.</li>
-      </ul></div>
-    </div>
-  </section>
-
-  <section id="bahmni">
-    <h2>Compared with Bahmni</h2>
-    <p class="intro">164 features checked one by one.</p>
-    <div class="card">
-      <div class="bars">
-        <div class="bar"><span>Have</span><div class="track"><div class="fill f-have" style="width:57%"></div></div><b>94</b></div>
-        <div class="bar"><span>Partly have</span><div class="track"><div class="fill f-part" style="width:21%"></div></div><b>34</b></div>
-        <div class="bar"><span>Do not have yet</span><div class="track"><div class="fill f-miss" style="width:21%"></div></div><b>34</b></div>
+/* Test checklist */
+const state = store.get('lihiq-tests', {});
+const scWrap = document.getElementById('scenarios');
+scWrap.innerHTML = SCENARIOS.map((s, i) => {
+  const st = state[i] || {};
+  return `<details class="sc" id="sc-${i + 1}" data-i="${i}" data-state="${st.v || ''}">
+    <summary><span class="no">${i + 1}</span><span class="t"><b>${esc(s.t)}</b><span>${esc(s.who)}</span></span><span class="pill ${st.v === 'pass' ? 'p-ok' : st.v === 'issue' ? 'p-bad' : 'p-off'}" data-badge>${st.v === 'pass' ? 'Passed' : st.v === 'issue' ? 'Issue' : 'Not tested'}</span></summary>
+    <div class="body">
+      <ol class="steps">${s.steps.map((x, j) => `<li><label><input type="checkbox" id="st-${i}-${j}" data-j="${j}" ${st.s && st.s[j] ? 'checked' : ''}><span>${esc(x)}</span></label></li>`).join('')}</ol>
+      <p class="expect"><b>You should see:</b> ${esc(s.expect)}</p>
+      <div class="verdict">
+        <button type="button" class="vbtn pass" data-v="pass" aria-pressed="${st.v === 'pass'}">Passed</button>
+        <button type="button" class="vbtn issue" data-v="issue" aria-pressed="${st.v === 'issue'}">Issue</button>
+        <input class="note-in" id="note-${i}" type="text" maxlength="300" placeholder="Note, for example what went wrong" value="${esc(st.n || '')}" aria-label="Note for scenario ${i + 1}">
       </div>
-      <p style="margin:12px 0 0;color:var(--muted)">Two features do not apply. About 15 of the 94 are things Bahmni does not offer: cashier shifts and refunds with approval, pay-first rules, the emergency board, bed-day and theatre charges, payroll and HR, workflow switches, record amendments, the doctor's case pipeline and patient self-booking.</p>
-    </div>
-    <div class="cards" style="margin-top:12px">
-      <div class="card"><h3>Where we match or go beyond Bahmni</h3><ul>
-        <li>Registration, IDs and the patient record; queue and triage.</li>
-        <li>Consultation, orders, prescriptions with allergy check, order sets.</li>
-        <li>Laboratory with ranges, panels, validation, rejection and referral.</li>
-        <li>Pharmacy and stock; wards, nursing and the medication chart.</li>
-        <li>Billing with cashier controls; appointments with SMS.</li>
-        <li>Theatre with the WHO checklist; everyday and HMIS-style reports; patient portal.</li>
-      </ul></div>
-      <div class="card"><h3>What Bahmni has that we do not yet</h3><ul>
-        <li>TB, HIV and ANC programs; immunisation schedules.</li>
-        <li>Form builder, coded observations, calculated fields; SNOMED, LOINC and CIEL.</li>
-        <li>Staff screens in Amharic (the patient app already has Amharic).</li>
-        <li>Lab analyser interface, microbiology, quality control.</li>
-        <li>PACS and DICOM viewer; radiology report templates.</li>
-        <li>Drug interaction check, procedure orders, growth chart, back-dated visits.</li>
-        <li>Fluid balance, expected discharge date, undo discharge.</li>
-        <li>Controlled-drug register, return to stock, VAT lines, supplier bills.</li>
-        <li>Recurring appointments, theatre calendar, e-mailed reports, fingerprint ID.</li>
-      </ul></div>
-    </div>
-  </section>
+    </div></details>`;
+}).join('');
+function saveState() { store.set('lihiq-tests', state); paintProgress(); }
+function paintProgress() {
+  const vals = SCENARIOS.map((_, i) => (state[i] || {}).v);
+  const pass = vals.filter((v) => v === 'pass').length;
+  const issue = vals.filter((v) => v === 'issue').length;
+  const total = SCENARIOS.length;
+  document.getElementById('prog-text').textContent = `${pass + issue} of ${total} scenarios tested`;
+  document.getElementById('m-pass').style.width = `${(pass / total) * 100}%`;
+  document.getElementById('m-issue').style.width = `${(issue / total) * 100}%`;
+  document.getElementById('lg-pass').textContent = `${pass} passed`;
+  document.getElementById('lg-issue').textContent = `${issue} with an issue`;
+  document.getElementById('lg-left').textContent = `${total - pass - issue} to go`;
+}
+scWrap.addEventListener('change', (e) => {
+  const box = e.target.closest('input[type=checkbox]'); if (!box) return;
+  const i = box.closest('.sc').dataset.i; state[i] = state[i] || {}; state[i].s = state[i].s || {};
+  state[i].s[box.dataset.j] = box.checked; saveState();
+});
+scWrap.addEventListener('input', (e) => {
+  if (!e.target.classList.contains('note-in')) return;
+  const i = e.target.closest('.sc').dataset.i; state[i] = state[i] || {}; state[i].n = e.target.value; saveState();
+});
+scWrap.addEventListener('click', (e) => {
+  const b = e.target.closest('.vbtn'); if (!b) return;
+  const sc = b.closest('.sc'); const i = sc.dataset.i; state[i] = state[i] || {};
+  state[i].v = state[i].v === b.dataset.v ? '' : b.dataset.v;
+  sc.dataset.state = state[i].v;
+  sc.querySelectorAll('.vbtn').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.v === state[i].v)));
+  const badge = sc.querySelector('[data-badge]');
+  badge.className = `pill ${state[i].v === 'pass' ? 'p-ok' : state[i].v === 'issue' ? 'p-bad' : 'p-off'}`;
+  badge.textContent = state[i].v === 'pass' ? 'Passed' : state[i].v === 'issue' ? 'Issue' : 'Not tested';
+  saveState();
+});
+const resetBox = document.getElementById('reset-confirm');
+document.getElementById('reset-btn').addEventListener('click', () => { resetBox.hidden = false; });
+document.getElementById('reset-no').addEventListener('click', () => { resetBox.hidden = true; });
+document.getElementById('reset-yes').addEventListener('click', () => {
+  Object.keys(state).forEach((k) => delete state[k]); saveState();
+  scWrap.querySelectorAll('input[type=checkbox]').forEach((x) => { x.checked = false; });
+  scWrap.querySelectorAll('.note-in').forEach((x) => { x.value = ''; });
+  scWrap.querySelectorAll('.sc').forEach((sc) => {
+    sc.dataset.state = ''; sc.querySelectorAll('.vbtn').forEach((x) => x.setAttribute('aria-pressed', 'false'));
+    const badge = sc.querySelector('[data-badge]'); badge.className = 'pill p-off'; badge.textContent = 'Not tested';
+  });
+  resetBox.hidden = true;
+});
+paintProgress();
 
-  <section id="next">
-    <h2>Next steps</h2>
-    <p class="intro">What we will build next, and what we need from the hospital to go live.</p>
+/* Bahmni */
+const counted = FEATURES.filter((f) => f.s !== 'NA');
+const by = (s) => FEATURES.filter((f) => f.s === s).length;
+const order = ['HAVE', 'DEV', 'PARTIAL', 'MISSING'];
+document.getElementById('fact-bahmni').textContent = `${by('HAVE')} of ${FEATURES.length}`;
+document.getElementById('stack').innerHTML = order.map((s) => `<i class="${STATUS[s].bar}" style="width:${(by(s) / counted.length) * 100}%"></i>`).join('');
+let statusFilter = '';
+const countsEl = document.getElementById('counts');
+countsEl.innerHTML = order.map((s) => `<button type="button" class="count" data-s="${s}" aria-pressed="false"><b>${by(s)}</b><span>${STATUS[s].label}</span></button>`).join('');
+countsEl.addEventListener('click', (e) => {
+  const b = e.target.closest('.count'); if (!b) return;
+  statusFilter = statusFilter === b.dataset.s ? '' : b.dataset.s;
+  countsEl.querySelectorAll('.count').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.s === statusFilter)));
+  paintFeatures();
+});
+const mods = [...new Set(FEATURES.map((f) => f.m))];
+const fm = document.getElementById('f-m');
+fm.innerHTML = `<option value="">All areas</option>` + mods.map((m) => `<option>${esc(m)}</option>`).join('');
+const fq = document.getElementById('f-q');
+let showAll = false;
+const moreBtn = document.getElementById('f-more');
+moreBtn.addEventListener('click', () => { showAll = !showAll; paintFeatures(); });
+function paintFeatures() {
+  const q = fq.value.trim().toLowerCase();
+  const all = FEATURES.filter((f) => (!fm.value || f.m === fm.value) && (!statusFilter || f.s === statusFilter) && (!q || `${f.f} ${f.m} ${f.n}`.toLowerCase().includes(q)));
+  const narrowed = Boolean(q || fm.value || statusFilter);
+  const rows = narrowed || showAll ? all : all.slice(0, 12);
+  moreBtn.hidden = narrowed || all.length <= 12;
+  moreBtn.textContent = showAll ? 'Show fewer' : 'Show all ' + all.length + ' features';
+  document.getElementById('flist').innerHTML = rows.length
+    ? rows.map((f) => `<div class="frow"><code>${esc(f.id)}</code><div class="f"><span>${esc(f.f)}${f.x ? '<span class="extra">Lihiq only</span>' : ''}</span><small>${esc(f.m)}${f.n ? ' · ' + esc(f.n) : ''}</small></div><span class="pill tag ${STATUS[f.s].cls}">${STATUS[f.s].label}</span></div>`).join('')
+    : `<p class="empty">No feature matches. Clear the search or choose All areas.</p>`;
+}
+fq.addEventListener('input', paintFeatures);
+fm.addEventListener('change', paintFeatures);
+paintFeatures();
 
-    <h3 style="margin-top:8px">What we will build next: closing the remaining gaps</h3>
-    <div class="wide-table">
-      <table>
-        <tr><th>#</th><th>Gap</th><th>Why it matters</th><th>State</th></tr>
-        <tr><td>1</td><td>Drug interaction check when prescribing</td><td>Prescribing safety</td><td><span class="pill plan">Next</span></td></tr>
-        <tr><td>2</td><td>Sick note and referral letter printing</td><td>Everyday documents for patients</td><td><span class="pill plan">Next</span></td></tr>
-        <tr><td>3</td><td>Fluid balance (intake and output) and expected discharge date</td><td>Ward care and bed planning</td><td><span class="pill plan">Next</span></td></tr>
-        <tr><td>4</td><td>Undo a discharge made by mistake, with a reason</td><td>Correcting errors safely</td><td><span class="pill plan">Next</span></td></tr>
-        <tr><td>5</td><td>Return to stock and a controlled-drug register</td><td>Pharmacy control</td><td><span class="pill plan">Next</span></td></tr>
-        <tr><td>6</td><td>Recurring appointments</td><td>Chronic care follow-up</td><td><span class="pill plan">Next</span></td></tr>
-        <tr><td>7</td><td>Amharic staff screens</td><td>Staff working in their own language</td><td><span class="pill plan">Planned</span></td></tr>
-        <tr><td>8</td><td>TB, HIV and ANC programs and a form builder</td><td>Disease programs, if the pilot runs these clinics</td><td><span class="pill plan">Planned</span></td></tr>
-        <tr><td>9</td><td>Lab analyser interface, microbiology, PACS</td><td>Machine integration, if the hospital has the equipment</td><td><span class="pill plan">Later</span></td></tr>
-      </table>
-    </div>
-    <p class="intro" style="margin-top:8px">Each item is built with its own automated tests and added to this page when it is done.</p>
+/* Next steps */
+document.getElementById('gaps').innerHTML = GAPS.map((g, i) => `<div class="gap ${g.s === 'dev' ? '' : 'later'}"><span class="k">${i + 1}</span>
+  <div class="g"><b>${esc(g.t)}</b><span>${esc(g.w)}</span></div>
+  <span class="pill ${g.s === 'dev' ? 'p-dev' : 'p-off'}">${g.s === 'dev' ? 'In development · due 17 Oct' : g.s === 'plan' ? 'Planned' : 'Later'}</span></div>`).join('');
 
-    <h3 style="margin-top:20px">Road to go-live</h3>
-    <div class="timeline">
-      <div class="step-row"><div class="num">1</div><div><strong>Hospital server in place</strong><p>About 8 cores, 32 GB memory, two mirrored SSDs of at least 500 GB, a UPS and a backup disk. A starting point, not a quotation.</p></div></div>
-      <div class="step-row"><div class="num">2</div><div><strong>Installation and your data</strong><p>We install the system, then import your price list, test and drug catalogs, and staff list. A named administrator; one account per staff member.</p></div></div>
-      <div class="step-row"><div class="num">3</div><div><strong>Training</strong><p>Desk leads are trained desk by desk, with short desk guides.</p></div></div>
-      <div class="step-row"><div class="num">4</div><div><strong>Acceptance test</strong><p>Your staff run the scenarios on this page, plus a load test and a security review on your server.</p></div></div>
-      <div class="step-row"><div class="num">5</div><div><strong>Pilot go-live</strong><p>Outpatient plus one ward first, then the rest of the hospital.</p></div></div>
-    </div>
-    <div class="note"><strong>Optional:</strong> an SMS provider account turns on appointment reminders and critical-result texts.</div>
-  </section>
-
-  <footer>LihiqHIS · Hospital Operating System for Ethiopia · This page is updated as the work progresses. Last update: 16 October 2026.</footer>
-</main>
+/* Highlight the section in view */
+const links = [...document.querySelectorAll('#rail-nav a, #chip-nav a')];
+const secs = [...document.querySelectorAll('[data-sec]')];
+function markActive() {
+  let cur = secs[0].id;
+  for (const s of secs) { if (s.getBoundingClientRect().top < 140) cur = s.id; }
+  links.forEach((a) => a.classList.toggle('on', a.getAttribute('href') === '#' + cur));
+  const chip = document.querySelector(`#chip-nav a[href="#${cur}"]`);
+  if (chip && innerWidth <= 900) chip.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+addEventListener('scroll', markActive, { passive: true });
+markActive();
+</script>
 </body>
 </html>

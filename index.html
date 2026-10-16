@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LihiqHIS System Guide</title>
+<meta name="description" content="What LihiqHIS does desk by desk, how to test it, how it compares with Bahmni, and the next steps.">
+<style>
+  :root {
+    --ink: #0b2a4a; --text: #1f2a37; --muted: #5b6b7c; --line: #dfe6ee;
+    --bg: #f5f7fa; --card: #ffffff; --ok-bg: #e7f5ec; --ok: #1b7a3d;
+    --warn-bg: #fdf3dc; --warn: #8a5a00; --info-bg: #e8f0f8; --nav: #0b2a4a;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 "Segoe UI", Inter, Arial, sans-serif; }
+  a { color: var(--ink); }
+  .top { position: sticky; top: 0; z-index: 10; background: var(--nav); color: #fff; }
+  .top-inner { max-width: 1000px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 16px; align-items: center; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+  .top-inner::-webkit-scrollbar { display: none; }
+  .brand { font-weight: 700; margin-right: 8px; }
+  .top a { color: #dbe7f3; text-decoration: none; font-size: 14px; }
+  .top a:hover { color: #fff; }
+  main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 56px; }
+  .hero h1 { color: var(--ink); font-size: 32px; line-height: 1.2; margin: 8px 0; }
+  .kicker { color: var(--muted); font-size: 13px; letter-spacing: .05em; text-transform: uppercase; margin: 0; }
+  .lead { font-size: 18px; margin: 8px 0 0; }
+  .badge { display: inline-block; margin-top: 12px; padding: 6px 12px; border-radius: 999px; background: var(--ok-bg); color: var(--ok); font-weight: 600; font-size: 14px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0 8px; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .kpi b { display: block; color: var(--ink); font-size: 26px; line-height: 1.15; }
+  .kpi span { color: var(--muted); font-size: 14px; }
+  section { margin-top: 32px; }
+  h2 { color: var(--ink); font-size: 24px; margin: 0 0 6px; }
+  .intro { color: var(--muted); margin: 0 0 16px; }
+  h3 { color: var(--ink); font-size: 18px; margin: 0 0 8px; }
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .card ul, .card ol { margin: 0; padding-left: 20px; }
+  .card li { margin: 4px 0; }
+  .full { grid-column: 1 / -1; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .03em; background: #fafbfd; }
+  tr:last-child td { border-bottom: 0; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .done { background: var(--ok-bg); color: var(--ok); }
+  .wait { background: var(--warn-bg); color: var(--warn); }
+  .plan { background: var(--info-bg); color: var(--ink); }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
+  summary { cursor: pointer; padding: 14px 18px; font-weight: 600; color: var(--ink); list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--muted); font-weight: 400; }
+  details[open] summary::after { content: "–"; }
+  .steps { padding: 0 18px 16px; }
+  .steps ol { margin: 0 0 10px; padding-left: 20px; }
+  .expect { background: var(--ok-bg); border-radius: 8px; padding: 10px 12px; margin: 0; }
+  .expect b { color: var(--ok); }
+  .note { background: var(--info-bg); border-radius: 12px; padding: 14px 18px; margin-top: 12px; }
+  .bars { display: grid; gap: 8px; }
+  .bar { display: grid; grid-template-columns: 150px 1fr 48px; align-items: center; gap: 10px; font-size: 15px; }
+  .track { height: 12px; background: #e9eef4; border-radius: 999px; overflow: hidden; }
+  .fill { height: 100%; border-radius: 999px; }
+  .f-have { background: #3a9a5b; } .f-part { background: #d9a420; } .f-miss { background: #a8b4c2; }
+  .timeline { display: grid; gap: 10px; }
+  .step-row { display: grid; grid-template-columns: 34px 1fr; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .num { width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  .step-row p { margin: 4px 0 0; color: var(--muted); }
+  footer { color: var(--muted); font-size: 13px; margin-top: 40px; border-top: 1px solid var(--line); padding-top: 16px; }
+  @media (max-width: 760px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .cards { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 26px; }
+    h2 { font-size: 21px; }
+    .bar { grid-template-columns: 110px 1fr 40px; font-size: 14px; }
+    th, td { padding: 8px 10px; font-size: 14px; }
+    .wide-table { overflow-x: auto; }
+    .wide-table table { min-width: 560px; }
+  }
+  @media print {
+    .top { display: none; }
+    details { break-inside: avoid; }
+    details:not([open]) .steps { display: block; }
+  }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Sections">
+  <div class="top-inner">
+    <span class="brand">LihiqHIS</span>
+    <a href="#overview">Overview</a>
+    <a href="#desks">Desk by desk</a>
+    <a href="#test">Test it yourself</a>
+    <a href="#admin">Administrator</a>
+    <a href="#safety">Safety</a>
+    <a href="#bahmni">Bahmni comparison</a>
+    <a href="#next">Next steps</a>
+  </div>
+</nav>
+
+<main>
+  <header class="hero" id="overview">
+    <p class="kicker">LihiqHIS · System guide · Updated 16 October 2026</p>
+    <h1>One hospital system, ready for a pilot on your server</h1>
+    <p class="lead">Reception, triage, doctor, laboratory, imaging, pharmacy, cashier, wards, emergency, theatre, store, insurance, finance, HR, reports and a patient app, on one database and on your own hospital server.</p>
+    <span class="badge">Ready for pilot installation</span>
+    <div class="kpis">
+      <div class="kpi"><b>525</b><span>automated checks passing</span></div>
+      <div class="kpi"><b>49</b><span>end-to-end test scripts</span></div>
+      <div class="kpi"><b>83</b><span>unit tests passing</span></div>
+      <div class="kpi"><b>94 of 164</b><span>Bahmni features matched</span></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>What is built</h2>
+    <div class="wide-table">
+      <table>
+        <tr><th>Area</th><th>Covers</th><th>State</th></tr>
+        <tr><td>Outpatient</td><td>Reception, triage, doctor, laboratory, imaging, pharmacy, cashier</td><td><span class="pill done">Built and tested</span></td></tr>
+        <tr><td>Inpatient</td><td>Wards and beds, nursing, medication chart, emergency, theatre, stay billing</td><td><span class="pill done">Built and tested</span></td></tr>
+        <tr><td>Enterprise</td><td>Store and stock, procurement, insurance, finance, HR, payroll, reports, record amendments</td><td><span class="pill done">Built and tested</span></td></tr>
+        <tr><td>Patient</td><td>Patient web portal and patient mobile app (with Amharic)</td><td><span class="pill done">Built and tested</span></td></tr>
+        <tr><td>Server package</td><td>Installation, encrypted nightly backup, tested restore, health check</td><td><span class="pill done">Rehearsed</span></td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="desks">
+    <h2>Desk by desk</h2>
+    <p class="intro">What each desk does, and the rules the system enforces there.</p>
+    <div class="cards">
+      <div class="card"><h3>Reception</h3><ul>
+        <li>Register with a generated MRN: name, sex, date of birth or estimated age, phone, address, national ID, next of kin and photo.</li>
+        <li>Duplicate check, and merge of two records of the same person.</li>
+        <li>Card fee and card validity; choice of room and doctor on duty.</li>
+        <li>Pediatrics refuses patients at or over the age limit (default 18).</li>
+        <li>Patient ID card with barcode; documents on the record (referrals, ID scans, outside reports).</li>
+      </ul></div>
+      <div class="card"><h3>Triage</h3><ul>
+        <li>Vitals with graded alerts: mild, moderate, critical.</li>
+        <li>Triage category and chief complaint.</li>
+        <li>Queue order: Red first, by category, or by arrival.</li>
+        <li>Triage can be switched off for facilities that do not use it.</li>
+      </ul></div>
+      <div class="card"><h3>Doctor</h3><ul>
+        <li>Dashboard of cases: checked in, waiting for results, results back.</li>
+        <li>Complaints, history, physical examination (Normal or Abnormal per body system), and diagnosis with ICD code and Confirmed or Presumed.</li>
+        <li>Lab and imaging orders, order sets, and prescriptions with an allergy check.</li>
+        <li>Results with flags and the panel table; acknowledge, then close the case.</li>
+        <li>Admission decision, printed prescription and discharge summary.</li>
+        <li>After closing, an addendum or reopening with a reason. The original is always kept.</li>
+      </ul></div>
+      <div class="card"><h3>Laboratory</h3><ul>
+        <li>Work list, workload board, specimen collection with label print. The specimen is taken only after payment.</li>
+        <li>Normal ranges by sex and age, and an automatic flag: Low, High, Critical or Abnormal.</li>
+        <li>Panels with one value per measurement: CBC, liver, kidney, urinalysis.</li>
+        <li>Reject a specimen with a reason; the doctor sees why.</li>
+        <li>Optional second-person validation, or send a result back. Referral laboratory send-out.</li>
+        <li>Correct a posted result: the old value stays visible.</li>
+      </ul></div>
+      <div class="card"><h3>Imaging</h3><ul>
+        <li>Orders, start of study, report.</li>
+        <li>Attach images, PDF or DICOM files up to 10 MB.</li>
+      </ul></div>
+      <div class="card"><h3>Pharmacy and store</h3><ul>
+        <li>Dispense from the prescription, by batch and expiry, after payment.</li>
+        <li>Stores, receipts, transfers between stores, stock count.</li>
+        <li>Reorder and expiry alerts; purchase orders.</li>
+      </ul></div>
+      <div class="card"><h3>Cashier</h3><ul>
+        <li>Payments, receipts, and a collections report with search.</li>
+        <li>Shifts: opening float, counted drawer, a reason for any difference.</li>
+        <li>Refunds with approval, discounts within a limit, owed balances.</li>
+        <li>CBHI, fee-waiver and exempt schemes.</li>
+      </ul></div>
+      <div class="card"><h3>Wards and emergency</h3><ul>
+        <li>Wards, rooms and beds; admit, transfer, discharge with summary.</li>
+        <li>Nursing notes, vitals chart, medication administration record.</li>
+        <li>Bed-day and theatre charges go to the bill.</li>
+        <li>Emergency quick registration, emergency board with bays, admission from the ER.</li>
+      </ul></div>
+      <div class="card"><h3>Theatre</h3><ul>
+        <li>Booking with a room-clash check; start, complete and theatre fee.</li>
+        <li>WHO safety checklist: sign in, time out, sign out.</li>
+        <li>Team, anaesthesia type and ASA class.</li>
+        <li>An operative note the surgeon signs. A signed note is locked.</li>
+      </ul></div>
+      <div class="card"><h3>Reports</h3><ul>
+        <li>Everyday reports: visits, ward census, money, lab turnaround, stock, top diagnoses.</li>
+        <li>HMIS monthly summary by age band and sex.</li>
+        <li>Report builder: count one thing grouped by up to two; reports can be saved by name.</li>
+        <li>Download as Excel or PDF.</li>
+      </ul></div>
+      <div class="card"><h3>Appointments</h3><ul>
+        <li>Clinic sessions with slots; doctor hours and approved leave respected.</li>
+        <li>Double booking is refused.</li>
+        <li>SMS reminders a set number of hours before. They need an SMS provider account.</li>
+      </ul></div>
+      <div class="card"><h3>Enterprise and patient</h3><ul>
+        <li>Insurance coverage and claims; finance journals; HR and payroll.</li>
+        <li>Patient portal and app: their own record, results and bookings; Amharic in the app.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section id="test">
+    <h2>Test it yourself</h2>
+    <p class="intro">Short scenarios to run on the pilot system with your staff. Open each one for the steps and what you should see. Every scenario has an automated version that passed on 16 October 2026.</p>
+
+    <details><summary>1. A new outpatient visit, reception to pharmacy</summary><div class="steps"><ol>
+      <li>Reception: register a new patient and take the card fee.</li>
+      <li>Triage: enter vitals and a category.</li>
+      <li>Doctor: open the case, write the complaint and examination, add a diagnosis and order a lab test.</li>
+      <li>Cashier: take the lab fee. Laboratory: collect the specimen and post the result.</li>
+      <li>Doctor: read the result, prescribe and close the case. Pharmacy: dispense.</li>
+    </ol><p class="expect"><b>Expected:</b> each desk sees the patient only when it is their turn, the lab cannot collect before payment, and the stock of the dispensed drug goes down.</p></div></details>
+
+    <details><summary>2. Lab flags from normal ranges</summary><div class="steps"><ol>
+      <li>Order a CBC for a woman, pay, and collect the specimen.</li>
+      <li>Enter hemoglobin 9, white cells 40 and platelets 200.</li>
+      <li>Post the panel.</li>
+    </ol><p class="expect"><b>Expected:</b> while you type, hemoglobin shows Low, white cells Critical and platelets Normal. The panel is flagged Critical. The same hemoglobin of 13 shows Low for a man and Normal for a woman.</p></div></details>
+
+    <details><summary>3. Reject a specimen</summary><div class="steps"><ol>
+      <li>Collect a specimen, then choose Reject specimen and the reason Haemolysed.</li>
+      <li>Open the same case as the doctor.</li>
+    </ol><p class="expect"><b>Expected:</b> the order goes back to waiting for a specimen. The doctor sees "Specimen rejected: Haemolysed". Collecting again does not charge the patient twice.</p></div></details>
+
+    <details><summary>4. Second-person validation of lab results</summary><div class="steps"><ol>
+      <li>Administrator: in Facility workflow, choose "A second person validates each result".</li>
+      <li>Lab technician A posts a result. The doctor opens the case.</li>
+      <li>Technician A tries to validate it, then technician B validates it.</li>
+    </ol><p class="expect"><b>Expected:</b> the doctor sees "waiting" until it is validated. A cannot validate their own result. After B validates, the doctor sees the value and who validated it.</p></div></details>
+
+    <details><summary>5. Correct a signed record</summary><div class="steps"><ol>
+      <li>The lab corrects a posted result and gives a reason.</li>
+      <li>The doctor adds an addendum to a closed case, then reopens a case closed by mistake.</li>
+    </ol><p class="expect"><b>Expected:</b> the old value stays visible next to the new one, with who, when and why. A nurse cannot add an addendum.</p></div></details>
+
+    <details><summary>6. Admission, ward care and discharge</summary><div class="steps"><ol>
+      <li>The doctor decides to admit. The ward assigns a bed.</li>
+      <li>The nurse charts vitals and gives a medicine on the medication chart.</li>
+      <li>Transfer to another bed, then discharge with a summary.</li>
+    </ol><p class="expect"><b>Expected:</b> the bed shows occupied, bed days are charged, the discharge summary prints, and the bed is free again.</p></div></details>
+
+    <details><summary>7. Theatre with the WHO safety checklist</summary><div class="steps"><ol>
+      <li>Administrator: make the theatre checklist required.</li>
+      <li>Book a case and try to start it. Tick Sign in and Time out, then start.</li>
+      <li>Record the team, anaesthesia and the operative note. Tick Sign out, sign the note, then complete.</li>
+    </ol><p class="expect"><b>Expected:</b> the case cannot start before Sign in and Time out, and cannot be completed before Sign out and a signed note. After signing, the note cannot be edited.</p></div></details>
+
+    <details><summary>8. Cashier shift and refund</summary><div class="steps"><ol>
+      <li>Open a shift with a float and take some payments.</li>
+      <li>Request a refund; approve it as finance or the administrator.</li>
+      <li>Close the shift and count the drawer.</li>
+    </ol><p class="expect"><b>Expected:</b> the shift report shows expected against counted cash, and a difference needs a reason. A discount over the cashier's limit is refused.</p></div></details>
+
+    <details><summary>9. Appointments and SMS reminders</summary><div class="steps"><ol>
+      <li>Open a clinic session with 30-minute slots. Book a slot, then try to book the same slot again.</li>
+      <li>Try to book the doctor outside their hours, or on approved leave.</li>
+      <li>Administrator: turn on SMS reminders 24 hours ahead and press "Send due reminders now".</li>
+    </ol><p class="expect"><b>Expected:</b> the double booking, out-of-hours and leave bookings are refused. With an SMS provider set up, patients with a phone receive one reminder each.</p></div></details>
+
+    <details><summary>10. HMIS monthly summary and the report builder</summary><div class="steps"><ol>
+      <li>Reports, then "HMIS monthly summary and custom reports". Pick a month and press Show.</li>
+      <li>Download it as Excel and as PDF.</li>
+      <li>Build a report: count visits by sex and age band. Save it by name.</li>
+    </ol><p class="expect"><b>Expected:</b> the age and sex tables add up to the totals, the visit total matches the everyday report, and both files open.</p></div></details>
+
+    <details><summary>11. Accounts and sign-in security</summary><div class="steps"><ol>
+      <li>Administrator: open an account with a weak password, then a good one.</li>
+      <li>Sign in as that person. Then enter a wrong password 5 times.</li>
+      <li>Administrator: unlock the account, then set a new password for it.</li>
+    </ol><p class="expect"><b>Expected:</b> the weak password is refused, the person must choose their own password at first sign-in, the account locks after 5 wrong tries, and unlock works.</p></div></details>
+
+    <details><summary>12. Backup and restore (IT staff)</summary><div class="steps"><ol>
+      <li>Run the nightly backup by hand.</li>
+      <li>Run the monthly restore check.</li>
+    </ol><p class="expect"><b>Expected:</b> an encrypted backup file is written and opened straight away to prove it can be read. The restore check reports OK, with the same row counts as the live system.</p></div></details>
+  </section>
+
+  <section id="admin">
+    <h2>What your administrator controls</h2>
+    <p class="intro">These change how the hospital works without a programmer.</p>
+    <div class="cards">
+      <div class="card"><h3>Workflow switches</h3><ul>
+        <li>Card fee on or off, and when it is charged.</li>
+        <li>Triage required or skipped; queue order.</li>
+        <li>Pay before service, or bill later.</li>
+        <li>What CBHI, fee-waiver and exempt patients are spared.</li>
+        <li>Required registration fields; Pediatrics age limit.</li>
+        <li>Admission by doctor decision first, or direct.</li>
+        <li>Settle the bill before discharge; cashier shifts required; discount limit.</li>
+        <li>Lab second-person validation; theatre checklist required.</li>
+        <li>SMS reminders and how many hours ahead.</li>
+      </ul></div>
+      <div class="card"><h3>Access and catalogs</h3><ul>
+        <li>Roles and permissions per desk; one named account per person.</li>
+        <li>Lockout after 5 wrong passwords; unlock; set a password that must be changed.</li>
+        <li>Prices and services, lab tests and their normal ranges, drugs, rooms, wards and stores.</li>
+        <li>Bulk import of catalogs.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section id="safety">
+    <h2>Safety, records and operations</h2>
+    <div class="cards">
+      <div class="card"><h3>Records</h3><ul>
+        <li>Every change is in the audit trail, with who and when.</li>
+        <li>Signed records are never overwritten. Corrections are added beside the original.</li>
+        <li>A critical lab result is texted to the ordering doctor once an SMS provider is set up.</li>
+      </ul></div>
+      <div class="card"><h3>Server</h3><ul>
+        <li>Runs on your own server and network; no internet needed for daily work.</li>
+        <li>Encrypted nightly backup, kept 30 days; monthly restore check.</li>
+        <li>Health check for "not answering", a disk 85% full, and a missing backup.</li>
+        <li>Demo accounts are switched off at installation.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section id="bahmni">
+    <h2>Compared with Bahmni</h2>
+    <p class="intro">164 features checked one by one.</p>
+    <div class="card">
+      <div class="bars">
+        <div class="bar"><span>Have</span><div class="track"><div class="fill f-have" style="width:57%"></div></div><b>94</b></div>
+        <div class="bar"><span>Partly have</span><div class="track"><div class="fill f-part" style="width:21%"></div></div><b>34</b></div>
+        <div class="bar"><span>Do not have yet</span><div class="track"><div class="fill f-miss" style="width:21%"></div></div><b>34</b></div>
+      </div>
+      <p style="margin:12px 0 0;color:var(--muted)">Two features do not apply. About 15 of the 94 are things Bahmni does not offer: cashier shifts and refunds with approval, pay-first rules, the emergency board, bed-day and theatre charges, payroll and HR, workflow switches, record amendments, the doctor's case pipeline and patient self-booking.</p>
+    </div>
+    <div class="cards" style="margin-top:12px">
+      <div class="card"><h3>Where we match or go beyond Bahmni</h3><ul>
+        <li>Registration, IDs and the patient record; queue and triage.</li>
+        <li>Consultation, orders, prescriptions with allergy check, order sets.</li>
+        <li>Laboratory with ranges, panels, validation, rejection and referral.</li>
+        <li>Pharmacy and stock; wards, nursing and the medication chart.</li>
+        <li>Billing with cashier controls; appointments with SMS.</li>
+        <li>Theatre with the WHO checklist; everyday and HMIS-style reports; patient portal.</li>
+      </ul></div>
+      <div class="card"><h3>What Bahmni has that we do not yet</h3><ul>
+        <li>TB, HIV and ANC programs; immunisation schedules.</li>
+        <li>Form builder, coded observations, calculated fields; SNOMED, LOINC and CIEL.</li>
+        <li>Staff screens in Amharic (the patient app already has Amharic).</li>
+        <li>Lab analyser interface, microbiology, quality control.</li>
+        <li>PACS and DICOM viewer; radiology report templates.</li>
+        <li>Drug interaction check, procedure orders, growth chart, back-dated visits.</li>
+        <li>Fluid balance, expected discharge date, undo discharge.</li>
+        <li>Controlled-drug register, return to stock, VAT lines, supplier bills.</li>
+        <li>Recurring appointments, theatre calendar, e-mailed reports, fingerprint ID.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section id="next">
+    <h2>Next steps</h2>
+    <p class="intro">What we will build next, and what we need from the hospital to go live.</p>
+
+    <h3 style="margin-top:8px">What we will build next: closing the remaining gaps</h3>
+    <div class="wide-table">
+      <table>
+        <tr><th>#</th><th>Gap</th><th>Why it matters</th><th>State</th></tr>
+        <tr><td>1</td><td>Drug interaction check when prescribing</td><td>Prescribing safety</td><td><span class="pill plan">Next</span></td></tr>
+        <tr><td>2</td><td>Sick note and referral letter printing</td><td>Everyday documents for patients</td><td><span class="pill plan">Next</span></td></tr>
+        <tr><td>3</td><td>Fluid balance (intake and output) and expected discharge date</td><td>Ward care and bed planning</td><td><span class="pill plan">Next</span></td></tr>
+        <tr><td>4</td><td>Undo a discharge made by mistake, with a reason</td><td>Correcting errors safely</td><td><span class="pill plan">Next</span></td></tr>
+        <tr><td>5</td><td>Return to stock and a controlled-drug register</td><td>Pharmacy control</td><td><span class="pill plan">Next</span></td></tr>
+        <tr><td>6</td><td>Recurring appointments</td><td>Chronic care follow-up</td><td><span class="pill plan">Next</span></td></tr>
+        <tr><td>7</td><td>Amharic staff screens</td><td>Staff working in their own language</td><td><span class="pill plan">Planned</span></td></tr>
+        <tr><td>8</td><td>TB, HIV and ANC programs and a form builder</td><td>Disease programs, if the pilot runs these clinics</td><td><span class="pill plan">Planned</span></td></tr>
+        <tr><td>9</td><td>Lab analyser interface, microbiology, PACS</td><td>Machine integration, if the hospital has the equipment</td><td><span class="pill plan">Later</span></td></tr>
+      </table>
+    </div>
+    <p class="intro" style="margin-top:8px">Each item is built with its own automated tests and added to this page when it is done.</p>
+
+    <h3 style="margin-top:20px">Road to go-live</h3>
+    <div class="timeline">
+      <div class="step-row"><div class="num">1</div><div><strong>Hospital server in place</strong><p>About 8 cores, 32 GB memory, two mirrored SSDs of at least 500 GB, a UPS and a backup disk. A starting point, not a quotation.</p></div></div>
+      <div class="step-row"><div class="num">2</div><div><strong>Installation and your data</strong><p>We install the system, then import your price list, test and drug catalogs, and staff list. A named administrator; one account per staff member.</p></div></div>
+      <div class="step-row"><div class="num">3</div><div><strong>Training</strong><p>Desk leads are trained desk by desk, with short desk guides.</p></div></div>
+      <div class="step-row"><div class="num">4</div><div><strong>Acceptance test</strong><p>Your staff run the scenarios on this page, plus a load test and a security review on your server.</p></div></div>
+      <div class="step-row"><div class="num">5</div><div><strong>Pilot go-live</strong><p>Outpatient plus one ward first, then the rest of the hospital.</p></div></div>
+    </div>
+    <div class="note"><strong>Optional:</strong> an SMS provider account turns on appointment reminders and critical-result texts.</div>
+  </section>
+
+  <footer>LihiqHIS · Hospital Operating System for Ethiopia · This page is updated as the work progresses. Last update: 16 October 2026.</footer>
+</main>
+</body>
+</html>

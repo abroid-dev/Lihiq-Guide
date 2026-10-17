@@ -712,8 +712,14 @@ function markActive() {
   let cur = secs[0].id;
   for (const s of secs) { if (s.getBoundingClientRect().top < 140) cur = s.id; }
   links.forEach((a) => a.classList.toggle('on', a.getAttribute('href') === '#' + cur));
-  const chip = document.querySelector(`#chip-nav a[href="#${cur}"]`);
-  if (chip && innerWidth <= 900) chip.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  /* Scroll only the chip bar sideways; scrollIntoView would also move the page and cancel a jump to a section */
+  const bar = document.getElementById('chip-nav');
+  const chip = bar.querySelector(`a[href="#${cur}"]`);
+  if (chip && innerWidth <= 900) {
+    const left = chip.offsetLeft, right = left + chip.offsetWidth;
+    if (left < bar.scrollLeft) bar.scrollLeft = left - 16;
+    else if (right > bar.scrollLeft + bar.clientWidth) bar.scrollLeft = right - bar.clientWidth + 16;
+  }
 }
 addEventListener('scroll', markActive, { passive: true });
 markActive();

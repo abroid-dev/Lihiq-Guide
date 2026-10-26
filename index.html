@@ -224,15 +224,16 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <a class="logo" href="#overview"><span class="mark" aria-hidden="true">L</span>LihiqHIS</a>
     <nav id="rail-nav">
       <a href="#overview"><span class="n">01</span>Overview</a>
-      <a href="#desks"><span class="n">02</span>Desk by desk</a>
-      <a href="#test"><span class="n">03</span>Test it yourself</a>
-      <a href="#admin"><span class="n">04</span>Administrator</a>
-      <a href="#safety"><span class="n">05</span>Safety</a>
-      <a href="#bahmni"><span class="n">06</span>Bahmni</a>
-      <a href="#next"><span class="n">07</span>Next steps</a>
+      <a href="#police"><span class="n">02</span>Police hospital</a>
+      <a href="#desks"><span class="n">03</span>Desk by desk</a>
+      <a href="#test"><span class="n">04</span>Test it yourself</a>
+      <a href="#admin"><span class="n">05</span>Administrator</a>
+      <a href="#safety"><span class="n">06</span>Safety</a>
+      <a href="#bahmni"><span class="n">07</span>Bahmni</a>
+      <a href="#next"><span class="n">08</span>Next steps</a>
     </nav>
     <div class="rail-foot">
-      <span>Updated 22 October 2026</span>
+      <span>Updated 26 October 2026</span>
       <button class="theme-btn" id="theme-btn" type="button">Switch to dark</button>
     </div>
   </aside>
@@ -240,6 +241,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
   <nav class="chips" id="chip-nav" aria-label="Sections">
     <span class="logo-s">LihiqHIS</span>
     <a href="#overview">Overview</a>
+    <a href="#police">Police hospital</a>
     <a href="#desks">Desks</a>
     <a href="#test">Test</a>
     <a href="#admin">Admin</a>
@@ -259,6 +261,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <span class="pill p-ok">Ready for pilot installation</span>
           <span class="pill p-ok">8 more improvements added on 16 October 2026</span>
           <span class="pill p-ok">Patient phone app finished on 22 October 2026</span>
+          <span class="pill p-ok">Free care for a police hospital added on 26 October 2026</span>
         </div>
 
         <div class="journey" aria-label="Where the project is">
@@ -290,9 +293,76 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         </div>
       </section>
 
+      <section id="police" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">02 · Police hospital</p>
+          <h2>Free care for members, counted against the government budget</h2>
+          <p>Members are treated without paying. Every service still carries its full price, so the hospital can show what the care cost, month by month and for the Ethiopian fiscal year.</p>
+        </div>
+
+        <h3>How payment is waived</h3>
+        <div class="road">
+          <div class="r"><span class="k">1</span><div><b>The administrator switches free care on</b><p>On the Facility workflow page, with the name of the sponsor, for example Federal Police. Every change of the switch is in the audit trail.</p></div></div>
+          <div class="r"><span class="k">2</span><div><b>Reception registers the patient</b><p>Reception does not ask for a payment mode. The card fee is charged to the sponsor at the full price, and the patient goes straight to triage without visiting the cashier.</p></div></div>
+          <div class="r"><span class="k">3</span><div><b>Every service is charged to the sponsor</b><p>Lab tests, imaging, medicine, bed days and theatre are priced from the hospital price list and charged to the sponsor. The laboratory collects the specimen and the pharmacy dispenses without waiting for a receipt.</p></div></div>
+          <div class="r"><span class="k">4</span><div><b>Nothing is given away without a record</b><p>Each charge keeps its full value and its date. The free-care report adds them up by service, member type and unit.</p></div></div>
+        </div>
+        <div class="callout"><b>Note:</b> while the switch is on, it applies to every patient in the hospital. If the hospital will also see paying civilians, tell us (question 2 below) and we will make it apply only to members.</div>
+
+        <div class="duo">
+          <div class="card"><h3>The member record</h3><ul>
+            <li>Police ID number, rank, unit, and member type: serving, retired, spouse, child or civilian staff. The administrator can add or rename types.</li>
+            <li>The date the member card is valid until.</li>
+            <li>A spouse or child is linked to the principal member, found by police ID, and follows that member's card.</li>
+            <li>Each patient shows as Verified, Card expired, Not verified or Not recorded.</li>
+            <li>A patient whose card is expired or not verified is still treated, but reception must write the reason, for example "Renewal letter seen".</li>
+          </ul></div>
+          <div class="card"><h3>The free-care report</h3><ul>
+            <li>Pick a month, or a whole Ethiopian fiscal year (Hamle 1 to Sene 30, about 8 July to 7 July).</li>
+            <li>Value of care by service, by member type and by unit.</li>
+            <li>The list of patients treated without a verified card, with each reason.</li>
+            <li>Medicines issued, valued at the latest purchase price.</li>
+            <li>Purchases grouped by budget code.</li>
+            <li>Download as Excel or PDF. It is under Reports, "Free care and budget".</li>
+          </ul></div>
+        </div>
+        <div class="card"><h3>Budget codes on purchases</h3><ul>
+          <li>The store or finance keeps the list of budget codes from the Ministry of Finance chart of accounts in Procurement.</li>
+          <li>Each purchase order is tagged with a budget code, so the report shows what was spent from each budget line.</li>
+          <li>A code that is no longer used is switched off, not deleted, so old orders keep their code.</li>
+        </ul></div>
+
+        <h3>A small team: one person, two desks</h3>
+        <p style="color:var(--muted)">The administrator gives one account two roles. The person sees both desks' work lists, and every action is still recorded under their own name.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Pair</th><th>What the person gets</th></tr></thead>
+            <tbody>
+              <tr><td>Nurse and lab bench</td><td>Starts at triage and also has the lab work list. The system no longer mistakes this person for a doctor.</td></tr>
+              <tr><td>Doctor and cashier</td><td>The doctor dashboard inside the full console, a "My cases" link, and the cashier screens.</td></tr>
+              <tr><td>Doctor and reception</td><td>Can register a patient, for example in an emergency at night, and then see them.</td></tr>
+              <tr><td>No cashier at all</td><td>With free care on, patients never wait at the cashier, so that desk is not needed for patient payments.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="color:var(--muted);font-size:15px">With second-person validation on, a lab result still needs a different person to confirm it, so a lab bench shared with nursing needs a second lab-trained person on the shift, or validation switched off.</p>
+
+        <h3>Questions we need you to answer</h3>
+        <div class="road">
+          <div class="r"><span class="k">1</span><div><b>Who is eligible?</b><p>Serving members, retired members, spouses, children (up to what age?), civilian staff, others? Is any of them only partly covered?</p></div></div>
+          <div class="r"><span class="k">2</span><div><b>Will the hospital also see paying patients?</b><p>For example civilians from the area. If yes, free care should apply only to members and the others pay as usual.</p></div></div>
+          <div class="r"><span class="k">3</span><div><b>What happens when a card is expired or cannot be checked?</b><p>Today the patient is treated and the reason is written. Should there be a limit, for example treat once and then require the card?</p></div></div>
+          <div class="r"><span class="k">4</span><div><b>Is there a member list we can import?</b><p>A file from police HR with ID, name, rank, unit and card date would let reception verify members instead of typing them.</p></div></div>
+          <div class="r"><span class="k">5</span><div><b>Which budget codes do you use?</b><p>Please share the Ministry of Finance or IFMIS chart of accounts codes the hospital spends from, so we load them for you.</p></div></div>
+          <div class="r"><span class="k">6</span><div><b>Which price list values the care?</b><p>The hospital's own price list, or a government tariff? Medicines are valued at the latest purchase price unless you prefer another rule.</p></div></div>
+          <div class="r"><span class="k">7</span><div><b>What must the monthly report look like?</b><p>Who receives it (Federal Police finance, the Ministry), who signs it, and is there an official form we should match?</p></div></div>
+          <div class="r"><span class="k">8</span><div><b>How many staff work each shift?</b><p>With the numbers per desk, we can suggest which roles to pair for day, night and weekend shifts.</p></div></div>
+        </div>
+      </section>
+
       <section id="desks" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">02 · Desk by desk</p>
+          <p class="eyebrow">03 · Desk by desk</p>
           <h2>What each desk does</h2>
           <p>Pick a desk to see what its staff can do and the rules the system enforces there.</p>
         </div>
@@ -302,17 +372,17 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="test" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">03 · Test it yourself</p>
-          <h2>Fifteen scenarios for your staff</h2>
-          <p>Run these on the pilot system. Tick each step as you go, then mark the scenario Passed or Issue and add a note. Your ticks and notes stay in this browser only. Every scenario also has an automated version: the first fourteen passed on 16 October 2026, the patient app on 22 October 2026.</p>
+          <p class="eyebrow">04 · Test it yourself</p>
+          <h2>Sixteen scenarios for your staff</h2>
+          <p>Run these on the pilot system. Tick each step as you go, then mark the scenario Passed or Issue and add a note. Your ticks and notes stay in this browser only. Every scenario also has an automated version: the first fourteen passed on 16 October 2026, the patient app on 22 October 2026, and free care on 26 October 2026.</p>
         </div>
         <div class="progress">
           <div class="progress-top">
-            <b id="prog-text">0 of 15 scenarios tested</b>
+            <b id="prog-text">0 of 16 scenarios tested</b>
             <button class="link-btn" type="button" id="reset-btn">Clear my ticks and notes</button>
           </div>
           <div class="meter" aria-hidden="true"><i class="m-pass" id="m-pass" style="width:0%"></i><i class="m-issue" id="m-issue" style="width:0%"></i></div>
-          <div class="legend"><span id="lg-pass">0 passed</span><span id="lg-issue">0 with an issue</span><span id="lg-left">15 to go</span></div>
+          <div class="legend"><span id="lg-pass">0 passed</span><span id="lg-issue">0 with an issue</span><span id="lg-left">16 to go</span></div>
           <div id="reset-confirm" class="verdict" hidden>
             <span>Clear every tick and note on this page?</span>
             <button class="vbtn issue" aria-pressed="true" type="button" id="reset-yes">Clear</button>
@@ -324,7 +394,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="admin" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">04 · Administrator</p>
+          <p class="eyebrow">05 · Administrator</p>
           <h2>What your administrator controls</h2>
           <p>These change how the hospital works, without a programmer. Each change is recorded in the audit trail.</p>
         </div>
@@ -339,9 +409,10 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
             <li>Settle the bill before discharge; cashier shifts required; the cashier's discount limit.</li>
             <li>Second-person validation of lab results; theatre safety checklist required.</li>
             <li>SMS appointment reminders, and how many hours ahead.</li>
+            <li>Free care on or off, the sponsor's name, and the list of member types.</li>
           </ul></div>
           <div class="card"><h3>Accounts and catalogs</h3><ul>
-            <li>Roles and permissions per desk, and one named account per person.</li>
+            <li>Roles and permissions per desk, and one named account per person. One account can hold two roles when staff cover two desks.</li>
             <li>An account locks after 5 wrong passwords; the administrator can unlock it.</li>
             <li>When the administrator sets a password, the person must choose their own at the next sign-in.</li>
             <li>Passwords need 10 or more characters with letters and a number.</li>
@@ -354,7 +425,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="safety" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">05 · Safety and records</p>
+          <p class="eyebrow">06 · Safety and records</p>
           <h2>How records and data are protected</h2>
         </div>
         <div class="duo">
@@ -378,7 +449,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="bahmni" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">06 · Bahmni comparison</p>
+          <p class="eyebrow">07 · Bahmni comparison</p>
           <h2>164 Bahmni features, checked one by one</h2>
           <p>Bahmni is the open-source hospital system many Ethiopian hospitals know. This is every feature on its list, with where LihiqHIS stands today. Features marked <span class="extra">Lihiq only</span> are things Bahmni does not offer.</p>
         </div>
@@ -396,9 +467,9 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="next" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">07 · Next steps</p>
+          <p class="eyebrow">08 · Next steps</p>
           <h2>What was added, what comes next, and the road to go-live</h2>
-          <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, each with its own automated tests. The rest are planned and depend on what the pilot needs.</p>
+          <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The rest are planned and depend on what the pilot needs.</p>
         </div>
         <div class="gaps" id="gaps"></div>
         <h3 style="margin-top:8px">Road to go-live</h3>
@@ -406,13 +477,13 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <div class="r"><span class="k">1</span><div><b>Hospital server in place</b><p>About 8 cores, 32 GB memory, two mirrored SSDs of at least 500 GB, a UPS and a backup disk. A starting point, not a quotation.</p></div></div>
           <div class="r"><span class="k">2</span><div><b>Installation and your data</b><p>We install the system and import your price list, test and drug catalogs and staff list. You name an administrator, and every staff member gets their own account.</p></div></div>
           <div class="r"><span class="k">3</span><div><b>Training</b><p>Desk leads are trained desk by desk, with short desk guides.</p></div></div>
-          <div class="r"><span class="k">4</span><div><b>Acceptance test</b><p>Your staff run the fifteen scenarios on this page. We run a load test and a security review on your server.</p></div></div>
+          <div class="r"><span class="k">4</span><div><b>Acceptance test</b><p>Your staff run the sixteen scenarios on this page. We run a load test and a security review on your server.</p></div></div>
           <div class="r"><span class="k">5</span><div><b>Pilot go-live</b><p>Outpatient plus one ward first, then the rest of the hospital.</p></div></div>
         </div>
         <div class="callout"><b>Optional:</b> an SMS provider account turns on appointment reminders and critical-result texts.</div>
       </section>
 
-      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 22 October 2026.</footer>
+      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 26 October 2026.</footer>
     </div>
   </main>
 </div>
@@ -465,7 +536,7 @@ const DESKS = [
     'Open a shift with a float and close it by counting the drawer.',
     'Request refunds, give discounts and record owed balances.',
     'Apply CBHI, fee-waiver and exempt schemes.'],
-    rules: ['A difference at shift close needs a reason.', 'A refund needs approval by finance or the administrator.', 'A discount above the cashier\'s limit is refused.'] },
+    rules: ['A difference at shift close needs a reason.', 'A refund needs approval by finance or the administrator.', 'A discount above the cashier\'s limit is refused.', 'With free care on, patients are not sent to the cashier; their charges go to the sponsor at full price.'] },
   { id: 'wards', name: 'Wards and emergency', does: [
     'Manage wards, rooms and beds; admit, transfer and discharge with a summary.',
     'Chart nursing notes, ward vitals and the medication administration record.',
@@ -550,6 +621,13 @@ const SCENARIOS = [
     'Doctor: issue a sick note for the patient. Laboratory: post a CBC for the same patient.', 'On the phone: open "Sick notes and referrals" and the lab results.',
     'On the phone: book an appointment, then choose "Cancel this booking".', 'On the phone: choose Sign out, then open the app again.'],
     expect: 'The app opens straight to the record without asking to sign in again. The sick note shows its number, and the CBC shows each measurement with its range. The cancelled booking shows Cancelled and the time is free again. After signing out, the app asks her to sign in.' },
+  { t: 'Free care for a police member', who: 'Administrator, reception, doctor, laboratory, pharmacy · about 15 minutes', steps: [
+    'Administrator: on Facility workflow, switch free care on with the sponsor Federal Police.',
+    'Reception: register a patient. On the record, add a serving member with police ID, rank, unit and a card valid until next year.',
+    'Register a second patient with a card that expired last year. Try to save without a reason, then write "Renewal letter seen".',
+    'Doctor: order a lab test and a medicine for the first patient. Laboratory: collect and post. Pharmacy: dispense.',
+    'Reports: open "Free care and budget", pick this month, then the fiscal year, and download Excel and PDF.'],
+    expect: 'Neither patient visits the cashier, and the lab and pharmacy do not wait for a receipt. The expired card cannot be saved without a reason. The report shows the card fee, test and medicine at full price, the member type and unit, and the second patient on the not-verified list with the reason.' },
   { t: 'Backup and restore', who: 'IT staff · about 10 minutes', steps: [
     'Run the nightly backup by hand.', 'Run the monthly restore check.'],
     expect: 'An encrypted backup file is written and opened straight away to prove it can be read. The restore check reports OK, with the same row counts as the live system.' },
@@ -566,6 +644,8 @@ const GAPS = [
   { t: 'Recurring appointments', w: 'Chronic-care follow-ups booked as a series.', s: 'done' },
   { t: 'Interaction rules the hospital owns', w: 'The head pharmacist adds, edits or switches off drug interaction rules, without a programmer.', s: 'done', d: '18 Oct' },
   { t: 'Patient phone app finished', w: 'Stays signed in safely, shows lab panels, sick notes and referrals, and lets the patient cancel a booking. The Android version is built; the iPhone version is set up and is built on a Mac.', s: 'done', d: '22 Oct' },
+  { t: 'Free care for a police hospital', w: 'Members treated without paying, each service charged to the sponsor at full price; member records with police ID, rank, unit and family links; a monthly and fiscal-year report; budget codes on purchase orders.', s: 'done', d: '26 Oct' },
+  { t: 'One person, two desks', w: 'Staff who cover two desks (nurse and lab, doctor and cashier, doctor and reception) get both work lists in one account.', s: 'done', d: '26 Oct' },
   { t: 'Amharic staff screens', w: 'Staff working in their own language. The patient app already has Amharic.', s: 'plan' },
   { t: 'TB, HIV and ANC programs, and a form builder', w: 'Disease programs and custom forms, if the pilot runs these clinics.', s: 'plan' },
   { t: 'Lab analyser interface, microbiology and PACS', w: 'Machine integration, if the hospital has the equipment.', s: 'later' },

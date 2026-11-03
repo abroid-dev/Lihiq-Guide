@@ -234,7 +234,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
       <a href="#next"><span class="n">09</span>Next steps</a>
     </nav>
     <div class="rail-foot">
-      <span>Updated 26 October 2026</span>
+      <span>Updated 3 November 2026</span>
       <button class="theme-btn" id="theme-btn" type="button">Switch to dark</button>
     </div>
   </aside>
@@ -264,13 +264,14 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <span class="pill p-ok">8 more improvements added on 16 October 2026</span>
           <span class="pill p-ok">Patient phone app finished on 22 October 2026</span>
           <span class="pill p-ok">Free care for a police hospital added on 26 October 2026</span>
+          <span class="pill p-ok">Test server online on 3 November 2026</span>
         </div>
 
         <div class="journey" aria-label="Where the project is">
           <div class="j done"><span class="dot">✓</span><b>Build</b><span>Outpatient, inpatient, enterprise, patient</span></div>
           <div class="j done"><span class="dot">✓</span><b>Test</b><span>56 end-to-end scripts, 123 unit tests</span></div>
-          <div class="j now"><span class="dot">3</span><b>Pilot install</b><span>Waiting for the hospital server</span></div>
-          <div class="j"><span class="dot">4</span><b>Train and accept</b><span>Your staff test it</span></div>
+          <div class="j done"><span class="dot">✓</span><b>Test server</b><span>Online since 3 November, secured and backed up</span></div>
+          <div class="j now"><span class="dot">4</span><b>Train and accept</b><span>Your staff test it</span></div>
           <div class="j"><span class="dot">5</span><b>Go live</b><span>Outpatient and one ward first</span></div>
         </div>
 
@@ -289,7 +290,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
               <tr><td>Inpatient</td><td>Wards and beds, nursing, medication chart, emergency, theatre, stay billing</td><td><span class="pill p-ok">Built and tested</span></td></tr>
               <tr><td>Enterprise</td><td>Store and stock, procurement, insurance, finance, HR, payroll, reports, record corrections</td><td><span class="pill p-ok">Built and tested</span></td></tr>
               <tr><td>Patient</td><td>Patient web portal, and a patient phone app for Android and iPhone, in English and Amharic</td><td><span class="pill p-ok">Built and tested</span></td></tr>
-              <tr><td>Server package</td><td>Installation, encrypted nightly backup, tested restore, health check</td><td><span class="pill p-ok">Rehearsed</span></td></tr>
+              <tr><td>Server package</td><td>Installation, encrypted nightly backup, tested restore, health check</td><td><span class="pill p-ok">Running on the test server</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -501,6 +502,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
             <li>A monthly restore check compares the backup with the live system.</li>
             <li>A health check reports when the system stops answering, the disk is 85% full, or no backup was made in 26 hours.</li>
             <li>Demo accounts are switched off at installation, and the system refuses to start with a weak secret key.</li>
+            <li>On the test server: secure web address (HTTPS) only, the database is not reachable from the internet, server sign-in by key only, and repeated failed sign-ins are blocked automatically.</li>
           </ul></div>
         </div>
       </section>
@@ -527,7 +529,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <div class="sec-head">
           <p class="eyebrow">09 · Next steps</p>
           <h2>What was added, what comes next, and the road to go-live</h2>
-          <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The rest are planned and depend on what the pilot needs.</p>
+          <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The test server went online on 3 November. The rest are planned and depend on what the pilot needs.</p>
         </div>
         <div class="gaps" id="gaps"></div>
         <h3 style="margin-top:8px">Road to go-live</h3>
@@ -541,7 +543,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <div class="callout"><b>Optional:</b> an SMS provider account turns on appointment reminders and critical-result texts.</div>
       </section>
 
-      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 26 October 2026.</footer>
+      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 3 November 2026.</footer>
     </div>
   </main>
 </div>
@@ -704,6 +706,7 @@ const GAPS = [
   { t: 'Patient phone app finished', w: 'Stays signed in safely, shows lab panels, sick notes and referrals, and lets the patient cancel a booking. The Android version is built; the iPhone version is set up and is built on a Mac.', s: 'done', d: '22 Oct' },
   { t: 'Free care for a police hospital', w: 'Members treated without paying, each service charged to the sponsor at full price; member records with police ID, rank, unit and family links; a monthly and fiscal-year report; budget codes on purchase orders.', s: 'done', d: '26 Oct' },
   { t: 'One person, two desks', w: 'Staff who cover two desks (nurse and lab, doctor and cashier, doctor and reception) get both work lists in one account.', s: 'done', d: '26 Oct' },
+  { t: 'Test server online', w: 'The full system installed with the server package on a secured test server, with the price list, tests, medicines and settings loaded. Demo accounts are off, the nightly encrypted backup runs, and a backup was restored and checked.', s: 'done', d: '3 Nov' },
   { t: 'Amharic staff screens', w: 'Staff working in their own language. The patient app already has Amharic.', s: 'plan' },
   { t: 'TB, HIV and ANC programs, and a form builder', w: 'Disease programs and custom forms, if the pilot runs these clinics.', s: 'plan' },
   { t: 'Lab analyser interface, microbiology and PACS', w: 'Machine integration, if the hospital has the equipment.', s: 'later' },

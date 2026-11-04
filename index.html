@@ -85,7 +85,7 @@ section > *, .wrap > * { min-width: 0; }
 .p-off { background: var(--off-soft); color: var(--off); }
 .p-bad { background: var(--bad-soft); color: var(--bad); }
 .journey { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.j { padding: 14px 14px 16px; display: grid; gap: 4px; border-right: 1px solid var(--line); position: relative; }
+.j { padding: 14px 14px 16px; display: grid; gap: 4px; align-content: start; border-right: 1px solid var(--line); position: relative; }
 .j:last-child { border-right: 0; }
 .j b { font: 700 15px/1.3 var(--display); color: var(--ink); }
 .j span { font-size: 14px; color: var(--muted); }
@@ -150,7 +150,7 @@ tr:last-child td { border-bottom: 0; }
 /* Two-column cards */
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; display: grid; gap: 10px; align-content: start; }
-.card ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.card ul, .card ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
 
 /* Bahmni */
 .stack { display: flex; height: 16px; border-radius: 999px; overflow: hidden; background: var(--off-soft); }
@@ -227,14 +227,15 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
       <a href="#police"><span class="n">02</span>Police hospital</a>
       <a href="#support"><span class="n">03</span>Training and support</a>
       <a href="#desks"><span class="n">04</span>Desk by desk</a>
-      <a href="#test"><span class="n">05</span>Test it yourself</a>
-      <a href="#admin"><span class="n">06</span>Administrator</a>
-      <a href="#safety"><span class="n">07</span>Safety</a>
-      <a href="#bahmni"><span class="n">08</span>Bahmni</a>
-      <a href="#next"><span class="n">09</span>Next steps</a>
+      <a href="#testflow"><span class="n">05</span>How we test now</a>
+      <a href="#test"><span class="n">06</span>Test it yourself</a>
+      <a href="#admin"><span class="n">07</span>Administrator</a>
+      <a href="#safety"><span class="n">08</span>Safety</a>
+      <a href="#bahmni"><span class="n">09</span>Bahmni</a>
+      <a href="#next"><span class="n">10</span>Next steps</a>
     </nav>
     <div class="rail-foot">
-      <span>Updated 3 November 2026</span>
+      <span>Updated 4 November 2026</span>
       <button class="theme-btn" id="theme-btn" type="button">Switch to dark</button>
     </div>
   </aside>
@@ -245,7 +246,8 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <a href="#police">Police hospital</a>
     <a href="#support">Support</a>
     <a href="#desks">Desks</a>
-    <a href="#test">Test</a>
+    <a href="#testflow">Test flow</a>
+    <a href="#test">Scenarios</a>
     <a href="#admin">Admin</a>
     <a href="#safety">Safety</a>
     <a href="#bahmni">Bahmni</a>
@@ -429,9 +431,47 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <div id="desk-panel" class="desk" role="tabpanel" aria-live="polite"></div>
       </section>
 
+      <section id="testflow" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">05 · How we test now</p>
+          <h2>The test flow: reception, triage, doctor, laboratory, pharmacy</h2>
+          <p>For this round of testing the cashier step is switched off, so the patient moves straight from one desk to the next. The charges are still recorded and wait for the cashier, who is tested in a later round.</p>
+        </div>
+
+        <div class="journey" aria-label="The test flow">
+          <div class="j"><span class="dot">1</span><b>Reception</b><span>Registers the patient, picks the room and writes the complaint. The patient goes straight to triage.</span></div>
+          <div class="j"><span class="dot">2</span><b>Triage</b><span>Takes the vitals and a category. An abnormal reading is saved and flagged.</span></div>
+          <div class="j"><span class="dot">3</span><b>Doctor</b><span>Examines, diagnoses, and orders lab tests and medicine.</span></div>
+          <div class="j"><span class="dot">4</span><b>Laboratory</b><span>Collects the specimen and posts the result without waiting for a receipt.</span></div>
+          <div class="j"><span class="dot">5</span><b>Pharmacy</b><span>Dispenses once the doctor has closed the case.</span></div>
+        </div>
+
+        <div class="duo">
+          <div class="card"><h3>Step by step</h3><ol>
+            <li>Reception: register a new patient with a name that starts with TEST, choose the room, write the complaint and press Register.</li>
+            <li>Triage: open the patient from the triage queue, enter the vitals and a category, and save.</li>
+            <li>Doctor: open the patient from your queue, write the examination, add a diagnosis and order a lab test.</li>
+            <li>Laboratory: collect the specimen and post the result.</li>
+            <li>Doctor: read the result, prescribe, and close the case.</li>
+            <li>Pharmacy: open the prescription and dispense.</li>
+          </ol>
+          <p><b>What you should see:</b> each desk sees the patient only when it is their turn, no desk asks for a receipt, and the stock of the dispensed medicine goes down.</p></div>
+          <div class="card"><h3>Before you start (administrator)</h3><ul>
+            <li>Facility workflow, Card fee: choose <b>No card fee</b> and save.</li>
+            <li>Facility workflow, Laboratory, imaging and medicine: choose <b>Served first, billed later</b> and save.</li>
+            <li>Leave triage on <b>Required</b>.</li>
+            <li>Inventory, Receive stock: put the medicines you will prescribe into the pharmacy store. The pharmacy cannot dispense a medicine that is not in stock.</li>
+            <li>Use one account per desk: reception, nurse, doctor, laboratory and pharmacy.</li>
+          </ul></div>
+        </div>
+
+        <div class="callout"><b>Good to know:</b> a patient already in today's queue is listed under Patients, Today, not under All patients. To see them under All patients too, open More filters and untick "Hide patients already in today's queue". Please send any problem to the test group with a screenshot and the name of the desk.</div>
+        <div class="callout"><b>Switching back later:</b> on the same Facility workflow page, choose <b>Charged</b> for the card fee and <b>Paid before the service</b> for orders. Each change applies to new check-ins and new orders from then on, and is recorded in the audit trail.</div>
+      </section>
+
       <section id="test" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">05 · Test it yourself</p>
+          <p class="eyebrow">06 · Test it yourself</p>
           <h2>Sixteen scenarios for your staff</h2>
           <p>Run these on the pilot system. Tick each step as you go, then mark the scenario Passed or Issue and add a note. Your ticks and notes stay in this browser only. Every scenario also has an automated version: the first fourteen passed on 16 October 2026, the patient app on 22 October 2026, and free care on 26 October 2026.</p>
         </div>
@@ -453,7 +493,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="admin" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">06 · Administrator</p>
+          <p class="eyebrow">07 · Administrator</p>
           <h2>What your administrator controls</h2>
           <p>These change how the hospital works, without a programmer. Each change is recorded in the audit trail.</p>
         </div>
@@ -484,7 +524,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="safety" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">07 · Safety and records</p>
+          <p class="eyebrow">08 · Safety and records</p>
           <h2>How records and data are protected</h2>
         </div>
         <div class="duo">
@@ -509,7 +549,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="bahmni" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">08 · Bahmni comparison</p>
+          <p class="eyebrow">09 · Bahmni comparison</p>
           <h2>164 Bahmni features, checked one by one</h2>
           <p>Bahmni is the open-source hospital system many Ethiopian hospitals know. This is every feature on its list, with where LihiqHIS stands today. Features marked <span class="extra">Lihiq only</span> are things Bahmni does not offer.</p>
         </div>
@@ -527,7 +567,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="next" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">09 · Next steps</p>
+          <p class="eyebrow">10 · Next steps</p>
           <h2>What was added, what comes next, and the road to go-live</h2>
           <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The test server went online on 3 November. The rest are planned and depend on what the pilot needs.</p>
         </div>
@@ -543,7 +583,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <div class="callout"><b>Optional:</b> an SMS provider account turns on appointment reminders and critical-result texts.</div>
       </section>
 
-      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 3 November 2026.</footer>
+      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 4 November 2026.</footer>
     </div>
   </main>
 </div>

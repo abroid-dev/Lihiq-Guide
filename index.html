@@ -576,6 +576,18 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           </ul></div>
         </div>
 
+        <div class="card" id="therapy-test"><h3>How to test the Abrihot part</h3>
+          <p>Four scenarios are at the end of <a href="#test">Test it yourself</a>, scenarios 17 to 20. Run them in this order, each with the people it names.</p>
+          <ol>
+            <li><b>Set up:</b> the administrator switches the facility to Therapy center and creates the four sign-ins.</li>
+            <li><b>Contact to a matched therapist:</b> front desk, clinical director and therapist.</li>
+            <li><b>Sessions, payment, notes and the ending:</b> front desk, cashier, therapist and director.</li>
+            <li><b>The online form, referral letter, coded names and the report.</b></li>
+          </ol>
+          <p><b>Please note:</b> while the facility is a therapy center, the reception sign-in opens Therapy cases instead of Rooms. Run this test when the hospital desks are not being tested, and switch the facility back to Hospital afterwards (the same page, Kind of facility). Use made-up client names that start with TEST.</p>
+          <p>For each scenario, tick the steps, mark Passed or Issue, and write what went wrong with a screenshot and the name of the person you were signed in as.</p>
+        </div>
+
         <div class="callout"><b>For the administrator:</b> Facility workflow, <b>Kind of facility</b>, choose Therapy center. Then set each unit's first step, session length and fee, whether a session is paid before, and whether consent comes first. The same page opens the online form and gives its link. In Access, create people as Clinical director, Therapist or Therapy center manager.</div>
 
         <h3>Questions for Abrihot</h3>
@@ -596,16 +608,16 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
       <section id="test" data-sec>
         <div class="sec-head">
           <p class="eyebrow">08 · Test it yourself</p>
-          <h2>Sixteen scenarios for your staff</h2>
-          <p>Run these on the pilot system. Tick each step as you go, then mark the scenario Passed or Issue and add a note. Your ticks and notes stay in this browser only. Every scenario also has an automated version: the first fourteen passed on 16 October 2026, the patient app on 22 October 2026, and free care on 26 October 2026.</p>
+          <h2>Twenty scenarios for your staff</h2>
+          <p>Run these on the pilot system. Tick each step as you go, then mark the scenario Passed or Issue and add a note. Your ticks and notes stay in this browser only. Every scenario also has an automated version: the first fourteen passed on 16 October 2026, the patient app on 22 October 2026, free care on 26 October 2026, and the four Abrihot scenarios on 9 November 2026.</p>
         </div>
         <div class="progress">
           <div class="progress-top">
-            <b id="prog-text">0 of 16 scenarios tested</b>
+            <b id="prog-text">0 of 20 scenarios tested</b>
             <button class="link-btn" type="button" id="reset-btn">Clear my ticks and notes</button>
           </div>
           <div class="meter" aria-hidden="true"><i class="m-pass" id="m-pass" style="width:0%"></i><i class="m-issue" id="m-issue" style="width:0%"></i></div>
-          <div class="legend"><span id="lg-pass">0 passed</span><span id="lg-issue">0 with an issue</span><span id="lg-left">16 to go</span></div>
+          <div class="legend"><span id="lg-pass">0 passed</span><span id="lg-issue">0 with an issue</span><span id="lg-left">20 to go</span></div>
           <div id="reset-confirm" class="verdict" hidden>
             <span>Clear every tick and note on this page?</span>
             <button class="vbtn issue" aria-pressed="true" type="button" id="reset-yes">Clear</button>
@@ -856,6 +868,33 @@ const SCENARIOS = [
   { t: 'Backup and restore', who: 'IT staff · about 10 minutes', steps: [
     'Run the nightly backup by hand.', 'Run the monthly restore check.'],
     expect: 'An encrypted backup file is written and opened straight away to prove it can be read. The restore check reports OK, with the same row counts as the live system.' },
+  { t: 'Abrihot: set up the therapy center', who: 'Administrator · about 10 minutes', steps: [
+    'Facility workflow, Kind of facility: choose Therapy center and save. Look at Units and programs: Adult unit (screening) and Child unit (assessment, Sessional and RITP).',
+    'Set the Adult unit session fee, for example 600 ETB, with "Paid before each session" and "Consent before the first session" ticked. Save the unit.',
+    'Access: create a Clinical director, a Therapist, a Receptionist for the front desk and a Therapy center manager, each with their own sign-in. Name the director on the Adult unit.',
+    'Sign in as each of them.'],
+    expect: 'Therapy cases is on the menu, and the director, therapist, front desk and manager each land on it. While the facility is a therapy center, the reception sign-in opens Therapy cases instead of Rooms, so switch back to Hospital when this test is over.' },
+  { t: 'Abrihot: a client from first contact to a matched therapist', who: 'Front desk, clinical director, therapist · about 15 minutes', steps: [
+    'Front desk: New contact. Choose New client, fill the details, the Adult unit, "Walk-in" and what brings them. Save.',
+    'Front desk: New contact for a child, in the Child unit. Try to save without a parent. Then add the parent\'s name and phone.',
+    'Director: open the adult client, choose the therapist and a day and time tomorrow, and press Book. Try the same time for the child with the same therapist.',
+    'Therapist: sign in, open the client, write the screening result with the risk and the recommendation Therapy at the center. Save.',
+    'Director: match the therapist and the program Sessional therapy.'],
+    expect: 'The client moves from New to Booked, Result in and Matched. The child cannot be saved without a parent. The same therapist cannot take two clients within the screening time. The therapist sees only their own client. The front desk sees where the case stands but not the summary of the result.' },
+  { t: 'Abrihot: sessions, payment, notes and the ending', who: 'Front desk, cashier, therapist, clinical director · about 20 minutes', steps: [
+    'Front desk: on the matched client, try to book a session. Then record the signed consent and book 3 weekly sessions.',
+    'Front desk: open the first session and press Attended. Then the cashier takes the fee and the front desk presses Attended again.',
+    'Front desk: move the second session to another day, and cancel the third with a reason.',
+    'Therapist: write the session note, then a therapy plan, and send it to the director. Director: mark it reviewed.',
+    'Therapist: end the case with a therapy report, a summary and a follow-up date.'],
+    expect: 'No session can be booked before the consent. An unpaid session cannot be marked attended; after payment it can, and the client moves to In therapy. The front desk cannot read the session note or the plan. A cancelled session drops its unpaid fee. The ended case leaves the open board and no session is left booked.' },
+  { t: 'Abrihot: the online form, referral letter, coded names and the report', who: 'Administrator, front desk, director, manager · about 20 minutes', steps: [
+    'Administrator: on Facility workflow, tick "Online registration form", copy the link, and open it on a phone without signing in. Switch to Amharic and back. Press Send with the form empty, then fill it in and send.',
+    'Front desk: open Online requests, press Make a case, and save the contact.',
+    'Front desk: on a case, file a referral letter (a PDF). Try to open it. Director: open the same case and read the letter.',
+    'Manager: open Therapy cases. Open the Report tab and download the Excel file.',
+    'Administrator: press New link, and try the old link.'],
+    expect: 'The empty form shows what is missing, in the chosen language. The answer waits as an online request until the front desk makes it a case. The front desk can file the letter but not open it. The manager sees a client code, not the name or phone, and the report shows counts only. The old link no longer works.' },
 ];
 
 const GAPS = [

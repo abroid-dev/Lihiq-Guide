@@ -229,11 +229,12 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
       <a href="#desks"><span class="n">04</span>Desk by desk</a>
       <a href="#testflow"><span class="n">05</span>How we test now</a>
       <a href="#inpatient"><span class="n">06</span>Inpatient flow</a>
-      <a href="#test"><span class="n">07</span>Test it yourself</a>
-      <a href="#admin"><span class="n">08</span>Administrator</a>
-      <a href="#safety"><span class="n">09</span>Safety</a>
-      <a href="#bahmni"><span class="n">10</span>Bahmni</a>
-      <a href="#next"><span class="n">11</span>Next steps</a>
+      <a href="#therapy"><span class="n">07</span>Therapy center</a>
+      <a href="#test"><span class="n">08</span>Test it yourself</a>
+      <a href="#admin"><span class="n">09</span>Administrator</a>
+      <a href="#safety"><span class="n">10</span>Safety</a>
+      <a href="#bahmni"><span class="n">11</span>Bahmni</a>
+      <a href="#next"><span class="n">12</span>Next steps</a>
     </nav>
     <div class="rail-foot">
       <span>Updated 9 November 2026</span>
@@ -249,6 +250,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <a href="#desks">Desks</a>
     <a href="#testflow">Test flow</a>
     <a href="#inpatient">Inpatient</a>
+    <a href="#therapy">Therapy center</a>
     <a href="#test">Scenarios</a>
     <a href="#admin">Admin</a>
     <a href="#safety">Safety</a>
@@ -536,9 +538,62 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         </div>
       </section>
 
+      <section id="therapy" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">07 · Therapy center</p>
+          <h2>Abrihot: the Adult and Child units on Lihiq</h2>
+          <p>Abrihot is a psychology center, so its day is not a hospital day. A client is screened or assessed, matched with a therapist, and then comes for sessions. The same Lihiq runs it: an administrator switches the facility from Hospital to <b>Therapy center</b> and everything below appears. A hospital sees no change.</p>
+        </div>
+
+        <div class="journey" aria-label="The therapy center flow">
+          <div class="j"><span class="dot">1</span><b>Contact</b><span>The client calls, walks in, is referred, or fills the online form. The front desk logs it, with the parent for a child.</span></div>
+          <div class="j"><span class="dot">2</span><b>Screening or assessment</b><span>The clinical director assigns it and books the time. Adult: a free 20-minute screening. Child: an assessment.</span></div>
+          <div class="j"><span class="dot">3</span><b>Result and match</b><span>The professional writes the result. The director matches a therapist and a program (Sessional, or RITP for children).</span></div>
+          <div class="j"><span class="dot">4</span><b>Sessions</b><span>Consent, then one session or a weekly series, paid before. Notes, therapy plan, ILP and progress evaluation.</span></div>
+          <div class="j"><span class="dot">5</span><b>Ending</b><span>Therapy report, assessment report, consultation, or referral, with a follow-up date.</span></div>
+        </div>
+
+        <div class="duo">
+          <div class="card"><h3>Working on the test server now</h3><ul>
+            <li><b>Case board per unit</b> that replaces the Adult and Child client trackers, with stage counts, search and an Excel download.</li>
+            <li><b>Booking</b> of the screening or assessment and of every session, with a clash check on the therapist's time.</li>
+            <li><b>Fees go to the cashier</b>, and with "paid before" on a session cannot be marked attended until it is paid.</li>
+            <li><b>Session notes, plans and reports</b> are clinical: only the client's therapists and the clinical director read them. A plan is drafted, sent to the director and reviewed.</li>
+            <li><b>Senior and junior therapist</b> on a child's case, and a change of therapist at any time with a reason.</li>
+            <li><b>Online registration form</b> in English and Amharic, which replaces the Google Form. Each answer waits for the front desk to make it a case.</li>
+            <li><b>Referral letters</b> are filed unopened by the front desk; only the director opens them.</li>
+            <li><b>Coded client names</b> for managers and the quality lead, and a <b>report</b> with each unit's funnel, waiting time, no-show rate and each therapist's load.</li>
+          </ul></div>
+          <div class="card"><h3>Not built yet</h3><ul>
+            <li>The center's own <b>screening and assessment result forms</b>. Today the form is generic: concern, summary, risk, recommendation.</li>
+            <li><b>Consent signed on a tablet.</b> Today the front desk records who signed.</li>
+            <li><b>Sending the form link</b> by SMS or Telegram from Lihiq. The administrator copies the link.</li>
+            <li><b>Package or monthly billing</b> (for example a monthly RITP fee). Today each session is its own charge.</li>
+            <li><b>Staff screens in Amharic.</b> The online form already has Amharic.</li>
+            <li><b>Video sessions.</b></li>
+          </ul></div>
+        </div>
+
+        <div class="callout"><b>For the administrator:</b> Facility workflow, <b>Kind of facility</b>, choose Therapy center. Then set each unit's first step, session length and fee, whether a session is paid before, and whether consent comes first. The same page opens the online form and gives its link. In Access, create people as Clinical director, Therapist or Therapy center manager.</div>
+
+        <h3>Questions for Abrihot</h3>
+        <p>With these answers we can match the screens to the way the center really works. Please send what you can, even a photo of a paper form.</p>
+        <div class="road">
+          <div class="r"><span class="k">1</span><div><b>Your forms and trackers</b><p>A blank copy of the Google Form and of the Adult and Child unit client trackers, so we match every field and column.</p></div></div>
+          <div class="r"><span class="k">2</span><div><b>The result forms</b><p>What the screening result form and the assessment result form contain, so we build them as structured forms.</p></div></div>
+          <div class="r"><span class="k">3</span><div><b>Prices</b><p>The session fee for each unit, whether the Child assessment is free like the adult screening, and whether clients pay by session, by package or monthly (for RITP).</p></div></div>
+          <div class="r"><span class="k">4</span><div><b>Change of therapist</b><p>Who approves it: the clinical director, the client case manager, or either?</p></div></div>
+          <div class="r"><span class="k">5</span><div><b>Online sessions</b><p>Do you see clients by video? If yes, a session can carry a link.</p></div></div>
+          <div class="r"><span class="k">6</span><div><b>Consent</b><p>Signed on a tablet at the front desk, or on paper and then recorded?</p></div></div>
+          <div class="r"><span class="k">7</span><div><b>Reports</b><p>Which reports the General Manager and the CEO receive today. Please share one, so Lihiq produces the same.</p></div></div>
+          <div class="r"><span class="k">8</span><div><b>Who sees names</b><p>Which roles should see only a client code: operations manager, service quality lead, general manager?</p></div></div>
+          <div class="r"><span class="k">9</span><div><b>The online form</b><p>Should clients keep using the Google Form during the first weeks, or move to the Lihiq link at once?</p></div></div>
+        </div>
+      </section>
+
       <section id="test" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">07 · Test it yourself</p>
+          <p class="eyebrow">08 · Test it yourself</p>
           <h2>Sixteen scenarios for your staff</h2>
           <p>Run these on the pilot system. Tick each step as you go, then mark the scenario Passed or Issue and add a note. Your ticks and notes stay in this browser only. Every scenario also has an automated version: the first fourteen passed on 16 October 2026, the patient app on 22 October 2026, and free care on 26 October 2026.</p>
         </div>
@@ -560,7 +615,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="admin" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">08 · Administrator</p>
+          <p class="eyebrow">09 · Administrator</p>
           <h2>What your administrator controls</h2>
           <p>These change how the hospital works, without a programmer. Each change is recorded in the audit trail.</p>
         </div>
@@ -591,7 +646,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="safety" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">09 · Safety and records</p>
+          <p class="eyebrow">10 · Safety and records</p>
           <h2>How records and data are protected</h2>
         </div>
         <div class="duo">
@@ -616,7 +671,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="bahmni" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">10 · Bahmni comparison</p>
+          <p class="eyebrow">11 · Bahmni comparison</p>
           <h2>164 Bahmni features, checked one by one</h2>
           <p>Bahmni is the open-source hospital system many Ethiopian hospitals know. This is every feature on its list, with where LihiqHIS stands today. Features marked <span class="extra">Lihiq only</span> are things Bahmni does not offer.</p>
         </div>
@@ -634,7 +689,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="next" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">11 · Next steps</p>
+          <p class="eyebrow">12 · Next steps</p>
           <h2>What was added, what comes next, and the road to go-live</h2>
           <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The test server went online on 3 November. The rest are planned and depend on what the pilot needs.</p>
         </div>

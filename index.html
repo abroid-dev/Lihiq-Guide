@@ -228,14 +228,15 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
       <a href="#support"><span class="n">03</span>Training and support</a>
       <a href="#desks"><span class="n">04</span>Desk by desk</a>
       <a href="#testflow"><span class="n">05</span>How we test now</a>
-      <a href="#test"><span class="n">06</span>Test it yourself</a>
-      <a href="#admin"><span class="n">07</span>Administrator</a>
-      <a href="#safety"><span class="n">08</span>Safety</a>
-      <a href="#bahmni"><span class="n">09</span>Bahmni</a>
-      <a href="#next"><span class="n">10</span>Next steps</a>
+      <a href="#inpatient"><span class="n">06</span>Inpatient flow</a>
+      <a href="#test"><span class="n">07</span>Test it yourself</a>
+      <a href="#admin"><span class="n">08</span>Administrator</a>
+      <a href="#safety"><span class="n">09</span>Safety</a>
+      <a href="#bahmni"><span class="n">10</span>Bahmni</a>
+      <a href="#next"><span class="n">11</span>Next steps</a>
     </nav>
     <div class="rail-foot">
-      <span>Updated 4 November 2026</span>
+      <span>Updated 9 November 2026</span>
       <button class="theme-btn" id="theme-btn" type="button">Switch to dark</button>
     </div>
   </aside>
@@ -247,6 +248,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <a href="#support">Support</a>
     <a href="#desks">Desks</a>
     <a href="#testflow">Test flow</a>
+    <a href="#inpatient">Inpatient</a>
     <a href="#test">Scenarios</a>
     <a href="#admin">Admin</a>
     <a href="#safety">Safety</a>
@@ -468,9 +470,75 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <div class="callout"><b>Switching back later:</b> on the same Facility workflow page, choose <b>Charged</b> for the card fee and <b>Paid before the service</b> for orders. Each change applies to new check-ins and new orders from then on, and is recorded in the audit trail.</div>
       </section>
 
+      <section id="inpatient" data-sec>
+        <div class="sec-head">
+          <p class="eyebrow">06 · Inpatient flow</p>
+          <h2>A ward stay from start to end: decide, place, care, send and bring back, discharge</h2>
+          <p>A stay is one record from admission to discharge. The patient keeps the same bed while away for an operation or a review, and every move is written in the stay's history with who did it and when.</p>
+        </div>
+
+        <div class="journey" aria-label="The inpatient flow">
+          <div class="j"><span class="dot">1</span><b>Doctor decides</b><span>From the visit, or from Emergency: the ward, the attending doctor and the reason. The decision waits for a bed.</span></div>
+          <div class="j"><span class="dot">2</span><b>Ward places</b><span>The ward nurse opens Wards, sees "Waiting for a bed" and taps a free bed. The bed shows as occupied.</span></div>
+          <div class="j"><span class="dot">3</span><b>Care on the ward</b><span>Vitals, medication chart, fluid balance and nursing notes. Bed days go on the bill each day.</span></div>
+          <div class="j"><span class="dot">4</span><b>Send to, bring back</b><span>Theatre, Emergency, an outpatient room, Imaging, the Laboratory or another place. The bed is kept.</span></div>
+          <div class="j"><span class="dot">5</span><b>Discharge</b><span>Home, referred, left against advice or died, with notes. The summary prints and the bed is free.</span></div>
+        </div>
+
+        <div class="duo">
+          <div class="card"><h3>Who does what</h3><ol>
+            <li><b>Doctor:</b> on the patient's visit, choose Admit, then the ward, the attending doctor and why. From Emergency, the disposition Admit does the same.</li>
+            <li><b>Ward nurse:</b> on Wards, under "Waiting for a bed", press Place and tap a free bed. The decided ward comes first; another ward is allowed when it is full.</li>
+            <li><b>Nurse:</b> open the bed's Stay. Chart vitals, give the medicines on the medication chart, chart intake and output, and write nursing notes.</li>
+            <li><b>Ward nurse:</b> to move the patient to another bed or ward, use "Move to another bed". The attending can change at the same time.</li>
+            <li><b>Ward nurse:</b> when the patient leaves the ward for a while, use <b>Send to</b>: choose the place and why. The bed shows <b>Away</b> with where and since when.</li>
+            <li><b>Ward nurse:</b> when the patient is back, press <b>Back on the ward</b> and note how they came back.</li>
+            <li><b>Ward nurse:</b> discharge with how the patient leaves and the notes. The discharge summary opens for printing.</li>
+          </ol></div>
+          <div class="card"><h3>Where a ward patient can go and come back</h3><ul>
+            <li><b>Theatre:</b> for an operation. The theatre case is booked on the stay, so its charges join the stay's bill.</li>
+            <li><b>Emergency:</b> when the patient deteriorates and needs the emergency team.</li>
+            <li><b>Outpatient room:</b> for a specialist review. The patient joins that room's list for the doctor there, with no triage and no card fee.</li>
+            <li><b>Imaging</b> and <b>Laboratory:</b> for a study or test that needs the patient there.</li>
+            <li><b>Another place:</b> the nurse writes it, for example physiotherapy or dialysis.</li>
+            <li>The administrator chooses which of these places the wards offer, on Facility workflow, "Where a ward patient can go and come back".</li>
+          </ul></div>
+        </div>
+
+        <div class="duo">
+          <div class="card"><h3>Rules the system keeps</h3><ul>
+            <li>One open stay per patient. The stay is never copied when the patient moves.</li>
+            <li>While the patient is away, the bed stays theirs and cannot be given to someone else. A bed move waits until they are back.</li>
+            <li>A patient can be discharged from where they are, for example referred to another hospital straight from theatre.</li>
+            <li>If the administrator chooses, the stay's cash bill is settled before going home or being referred.</li>
+            <li>A discharge made by mistake can be undone within 48 hours, with a reason.</li>
+          </ul></div>
+          <div class="card"><h3>Before you start (administrator)</h3><ul>
+            <li>Facility workflow, Wards and admission: choose whether the ward may admit directly or only after a doctor decides.</li>
+            <li>Set up the wards and beds, and the outpatient rooms a ward can send patients to.</li>
+            <li>Tick the places in "Where a ward patient can go and come back".</li>
+            <li>Choose whether the bill is settled before discharge.</li>
+          </ul></div>
+        </div>
+
+        <div class="callout"><b>Good to know:</b> on Wards, the Show filter has "Away from the ward" to list every patient who is out of their bed right now, with where they are.</div>
+
+        <h3>Decisions we need from you</h3>
+        <p>Send to works today as described above. These points can work in more than one way, so please tell us how your wards work. Each one becomes a setting the administrator can change, so different hospitals can choose differently.</p>
+        <div class="road">
+          <div class="r"><span class="k">1</span><div><b>Is the bed kept while the patient is away?</b><p>Today the bed is always kept, so the patient comes back to the same bed. Another option: free the bed while the patient is away, for example for a long stay in intensive care, and choose a bed again on return.</p></div></div>
+          <div class="r"><span class="k">2</span><div><b>When a ward patient goes to Emergency, who looks after them there?</b><p>Today the ward only records that the patient is in Emergency. Another option: the patient also appears on the Emergency board, so the emergency team charts vitals and notes there until the patient comes back.</p></div></div>
+          <div class="r"><span class="k">3</span><div><b>Imaging and the Laboratory: does the doctor's order send the patient?</b><p>Today the nurse chooses Send to by hand. Another option: when imaging or the laboratory calls an admitted patient for an order, the patient is marked away automatically, and back when the study or sample is done.</p></div></div>
+          <div class="r"><span class="k">4</span><div><b>Theatre: is the patient marked away when the operation starts?</b><p>Today the nurse sends the patient to theatre by hand. Another option: starting the operation in Theatre marks the patient away, and the ward confirms the return after recovery.</p></div></div>
+          <div class="r"><span class="k">5</span><div><b>An outpatient review: should the specialist's fee be charged?</b><p>Today the patient joins the room's list with no card fee, and anything the specialist orders follows the hospital's payment setting. Should a consultation fee for the review be added to the stay's bill?</p></div></div>
+          <div class="r"><span class="k">6</span><div><b>How do doctors write the daily ward round?</b><p>Today the attending doctor works on the admission visit, opened from the stay with "Open visit". Do your doctors want a separate daily progress note and a list of their own ward patients on their dashboard?</p></div></div>
+          <div class="r"><span class="k">7</span><div><b>Who may send a patient out and bring them back?</b><p>Today anyone who can manage the wards. Should this be limited, for example to the ward nurse in charge, or need the attending doctor's agreement?</p></div></div>
+        </div>
+      </section>
+
       <section id="test" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">06 · Test it yourself</p>
+          <p class="eyebrow">07 · Test it yourself</p>
           <h2>Sixteen scenarios for your staff</h2>
           <p>Run these on the pilot system. Tick each step as you go, then mark the scenario Passed or Issue and add a note. Your ticks and notes stay in this browser only. Every scenario also has an automated version: the first fourteen passed on 16 October 2026, the patient app on 22 October 2026, and free care on 26 October 2026.</p>
         </div>
@@ -492,7 +560,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="admin" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">07 · Administrator</p>
+          <p class="eyebrow">08 · Administrator</p>
           <h2>What your administrator controls</h2>
           <p>These change how the hospital works, without a programmer. Each change is recorded in the audit trail.</p>
         </div>
@@ -523,7 +591,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="safety" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">08 · Safety and records</p>
+          <p class="eyebrow">09 · Safety and records</p>
           <h2>How records and data are protected</h2>
         </div>
         <div class="duo">
@@ -548,7 +616,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="bahmni" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">09 · Bahmni comparison</p>
+          <p class="eyebrow">10 · Bahmni comparison</p>
           <h2>164 Bahmni features, checked one by one</h2>
           <p>Bahmni is the open-source hospital system many Ethiopian hospitals know. This is every feature on its list, with where LihiqHIS stands today. Features marked <span class="extra">Lihiq only</span> are things Bahmni does not offer.</p>
         </div>
@@ -566,7 +634,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
       <section id="next" data-sec>
         <div class="sec-head">
-          <p class="eyebrow">10 · Next steps</p>
+          <p class="eyebrow">11 · Next steps</p>
           <h2>What was added, what comes next, and the road to go-live</h2>
           <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The test server went online on 3 November. The rest are planned and depend on what the pilot needs.</p>
         </div>
@@ -582,7 +650,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <div class="callout"><b>Optional:</b> an SMS provider account turns on appointment reminders and critical-result texts.</div>
       </section>
 
-      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 4 November 2026.</footer>
+      <footer>LihiqHIS · Hospital operating system for Ethiopia · This page is updated as the work moves forward. Last update: 9 November 2026.</footer>
     </div>
   </main>
 </div>
@@ -638,6 +706,7 @@ const DESKS = [
     rules: ['A difference at shift close needs a reason.', 'A refund needs approval by finance or the administrator.', 'A discount above the cashier\'s limit is refused.', 'With free care on, patients are not sent to the cashier; their charges go to the sponsor at full price.'] },
   { id: 'wards', name: 'Wards and emergency', does: [
     'Manage wards, rooms and beds; admit, transfer and discharge with a summary.',
+    'Send a ward patient to theatre, emergency, an outpatient room, imaging, the laboratory or another place, and bring them back to the same bed.',
     'Chart nursing notes, ward vitals and the medication administration record.',
     'Register an emergency patient with few details and complete them later; use the emergency board with bays.',
     'Chart fluid balance (intake and output) with the day\'s totals, and set the expected discharge date.',
@@ -692,8 +761,8 @@ const SCENARIOS = [
     'The lab corrects a posted result and gives a reason.', 'The doctor adds an addendum to a closed case.', 'The doctor reopens a case closed by mistake. A nurse tries to add an addendum.'],
     expect: 'The old value stays visible beside the new one, with who, when and why. The nurse is refused.' },
   { t: 'Admission, ward care and discharge', who: 'Doctor, ward staff, nurse · about 10 minutes', steps: [
-    'The doctor decides to admit; the ward assigns a bed.', 'The nurse charts vitals and gives a medicine on the medication chart.', 'Transfer to another bed, then discharge with a summary.'],
-    expect: 'The bed shows as occupied, bed days are charged, the discharge summary prints, and the bed is free again afterwards.' },
+    'The doctor decides to admit; the ward assigns a bed.', 'The nurse charts vitals and gives a medicine on the medication chart.', 'Send the patient to Theatre, then press Back on the ward.', 'Transfer to another bed, then discharge with a summary.'],
+    expect: 'The bed shows as occupied, then Away while the patient is in theatre, and the stay history lists the trip and the return. Bed days are charged, the discharge summary prints, and the bed is free again afterwards.' },
   { t: 'Theatre with the WHO safety checklist', who: 'Administrator, theatre staff, surgeon · about 10 minutes', steps: [
     'Administrator: make the theatre checklist required.', 'Book a case and try to start it. Tick Sign in and Time out, then start.', 'Record the team, anaesthesia and the operative note. Tick Sign out, sign the note, then complete.'],
     expect: 'The case cannot start before Sign in and Time out, and cannot end before Sign out and a signed note. After signing, the note cannot be edited.' },

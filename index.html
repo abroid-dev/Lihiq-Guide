@@ -750,7 +750,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <div class="sec-head">
           <p class="eyebrow">13 · Next steps</p>
           <h2>What was added, what comes next, and the road to go-live</h2>
-          <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The test server went online on 3 November. On 13 November three steps moved to in progress: switching on the separate hospital data, the standard-code review, and more records shared through FHIR. The rest are planned and depend on what the pilot needs and on the Ministry.</p>
+          <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The test server went online on 3 November. On 13 November the separate hospital data was switched on for the test server, and two steps moved to in progress: the standard-code review and more records shared through FHIR. The rest are planned and depend on what the pilot needs and on the Ministry.</p>
         </div>
         <div class="gaps" id="gaps"></div>
         <h3 style="margin-top:8px">Road to go-live</h3>
@@ -962,7 +962,7 @@ const GAPS = [
   { t: 'Sharing records with other systems (FHIR), read and search', w: 'Patients, visits, staff, the hospital and branches, allergies, diagnoses, vitals, lab results and prescriptions, using the Ministry\'s Ethiopian patient profile. Checked with the official validator: no errors. Codes are not yet checked against a terminology server.', s: 'done', d: '12 Nov' },
   { t: 'Amharic staff screens', w: 'Staff working in their own language. The patient app already has Amharic.', s: 'plan' },
   { t: 'TB, HIV and ANC programs, and a form builder', w: 'Disease programs and custom forms, if the pilot runs these clinics.', s: 'plan' },
-  { t: 'Hospital data kept apart by the database, switched on', w: 'Built and tested with a second test hospital (27 attempts, none succeeded). Installed on the test server and switched off; it is being switched on, with a backup first.', s: 'wip' },
+  { t: 'Hospital data kept apart by the database', w: 'Built and tested with a second test hospital (27 attempts, none succeeded). Switched on for the test server after a backup; sign-in, the patient list, the desks and the shared records were checked afterwards.', s: 'done', d: '13 Nov' },
   { t: 'Review of the standard codes', w: 'The lab and the pharmacy check the LOINC codes (6 tests) and ATC codes (11 medicines) before they are shared. The list goes to them first.', s: 'wip' },
   { t: 'Sharing more records with FHIR', w: 'Dispense, lab and imaging orders and reports, appointments and insurance claims, then writing data in. Dispense and orders come first.', s: 'wip' },
   { t: 'Automatic eHMIS reports', w: 'Today the report for a priority disease is prepared and kept, not sent. It needs the Ministry\'s eHMIS connection details and national exchange specification, so it waits for them.', s: 'plan' },

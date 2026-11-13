@@ -628,6 +628,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <ul>
             <li>Patients follow the Ministry's Ethiopian profile, so the national ID, father's and grandfather's name, region, zone, woreda and kebele are carried.</li>
             <li>For now it is read and search only, and each person sees only their own hospital's records.</li>
+            <li>Also shared: medicine dispensed, lab and imaging orders and reports, appointments, insurance coverage, claims and claim answers.</li>
             <li>The output was checked with the official FHIR validator and it found no errors.</li>
           </ul></div>
           <div class="card"><h3>Standard codes for lab tests and medicines</h3>
@@ -750,7 +751,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <div class="sec-head">
           <p class="eyebrow">13 · Next steps</p>
           <h2>What was added, what comes next, and the road to go-live</h2>
-          <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The test server went online on 3 November. On 13 November the separate hospital data was switched on for the test server, and two steps moved to in progress: the standard-code review and more records shared through FHIR. The rest are planned and depend on what the pilot needs and on the Ministry.</p>
+          <p>The first eight items were built and tested on 16 October 2026, the next two on 18 and 22 October, and the police hospital items on 26 October, each with its own automated tests. The test server went online on 3 November. On 13 November the separate hospital data was switched on for the test server, and the code review and more shared records moved ahead: the extra records are done and the lab and pharmacy code review is in progress. The rest are planned and depend on what the pilot needs and on the Ministry.</p>
         </div>
         <div class="gaps" id="gaps"></div>
         <h3 style="margin-top:8px">Road to go-live</h3>
@@ -958,13 +959,13 @@ const GAPS = [
   { t: 'Test server online', w: 'The full system installed with the server package on a secured test server, with the price list, tests, medicines and settings loaded. Demo accounts are off, the nightly encrypted backup runs, and a backup was restored and checked.', s: 'done', d: '3 Nov' },
   { t: 'Inpatient: step away and return to the same bed', w: 'A patient can go to theatre, emergency, imaging, lab or another place and come back to the same bed. The administrator chooses the places each hospital offers.', s: 'done', d: '9 Nov' },
   { t: 'Abrihot therapy center', w: 'Contact, screening, therapist match, sessions and ending, with an online registration form in Amharic and English. A hospital can run a therapy unit beside its desks.', s: 'done', d: '9 Nov' },
-  { t: 'Sign-in with a hospital code', w: 'Asked only when the same email exists in two hospitals.', s: 'done', d: '12 Nov' },
+  { t: 'Sign-in with a hospital code', w: 'Asked only when the same email exists in two hospitals. The patient app and the clinical app ask for it the same way.', s: 'done', d: '12 Nov' },
   { t: 'Sharing records with other systems (FHIR), read and search', w: 'Patients, visits, staff, the hospital and branches, allergies, diagnoses, vitals, lab results and prescriptions, using the Ministry\'s Ethiopian patient profile. Checked with the official validator: no errors. Codes are not yet checked against a terminology server.', s: 'done', d: '12 Nov' },
   { t: 'Amharic staff screens', w: 'Staff working in their own language. The patient app already has Amharic.', s: 'plan' },
   { t: 'TB, HIV and ANC programs, and a form builder', w: 'Disease programs and custom forms, if the pilot runs these clinics.', s: 'plan' },
   { t: 'Hospital data kept apart by the database', w: 'Built and tested with a second test hospital (27 attempts, none succeeded). Switched on for the test server after a backup; sign-in, the patient list, the desks and the shared records were checked afterwards.', s: 'done', d: '13 Nov' },
   { t: 'Review of the standard codes', w: 'The lab and the pharmacy check the LOINC codes (6 tests) and ATC codes (11 medicines) before they are shared. The list goes to them first.', s: 'wip' },
-  { t: 'Sharing more records with FHIR', w: 'Dispense, lab and imaging orders and reports, appointments and insurance claims, then writing data in. Dispense and orders come first.', s: 'wip' },
+  { t: 'Sharing more records with FHIR, read and search', w: 'Medicine dispensed, lab and imaging orders and reports, appointments, insurance coverage, claims and claim answers. Checked with the official validator: no errors apart from the currency code, which the offline validator cannot look up.', s: 'done', d: '13 Nov' },
   { t: 'Automatic eHMIS reports', w: 'Today the report for a priority disease is prepared and kept, not sent. It needs the Ministry\'s eHMIS connection details and national exchange specification, so it waits for them.', s: 'plan' },
   { t: 'Adding a new hospital in one step', w: 'Roles, departments, settings and the first administrator ready at once; a separate database for a large hospital if it asks.', s: 'plan' },
   { t: 'Safer sign-in', w: 'Password reset or invite, tokens that can be revoked, and two-factor sign-in.', s: 'plan' },

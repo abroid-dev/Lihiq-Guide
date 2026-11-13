@@ -445,6 +445,23 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <p>For this round of testing the cashier step is switched off, so the patient moves straight from one desk to the next. The charges are still recorded and wait for the cashier, who is tested in a later round.</p>
         </div>
 
+        <div class="duo">
+          <div class="card"><h3>Before each testing day</h3><ol>
+            <li>Open <a href="https://lihiq-tech.dev">lihiq-tech.dev</a> and press <b>Ctrl+Shift+R</b> once (Cmd+Shift+R on a Mac). A tab left open from before keeps the old version until you do.</li>
+            <li>Sign in with the account for your desk. One person, one account. If you do not have one, ask the administrator.</li>
+            <li>No hospital code is asked. It is asked only when the same email exists in two hospitals.</li>
+            <li>Give every new patient a name that starts with <b>TEST</b>.</li>
+          </ol></div>
+          <div class="card"><h3>When something goes wrong</h3><ul>
+            <li>Send it to the test group with: the desk, the page, what you clicked, what you expected, what happened, the time, and a screenshot.</li>
+            <li>If a screen looks old or a button is missing, press Ctrl+Shift+R first and try again.</li>
+            <li>The doctor named on the visit writes its prescription. If the message says "Name a doctor on this visit", the coordinator or the administrator hands the visit to a doctor first.</li>
+            <li>Each desk sees only its own work. If your desk list is empty or a menu is missing, your account may have the wrong role: tell the administrator.</li>
+          </ul></div>
+        </div>
+
+        <div class="callout"><b>What changed on 13 November:</b> each hospital's data is now also kept apart by the database, and the system can share more kinds of records with other health systems. Nothing on the screens changed, so the test flow below is the same as before. If anything behaves differently from the last round, please report it.</div>
+
         <div class="journey" aria-label="The test flow">
           <div class="j"><span class="dot">1</span><b>Reception</b><span>Registers the patient, picks the room and writes the complaint. The patient goes straight to triage.</span></div>
           <div class="j"><span class="dot">2</span><b>Triage</b><span>Takes the vitals and a category. An abnormal reading is saved and flagged.</span></div>
